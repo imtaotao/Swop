@@ -1,0 +1,21 @@
+# vim
+*~
+*.sw?
+
+# misc editing tools
+.vscode/
+tags
+
+#mac
+*.DS_Store
+
+# build tools
+node_modules/
+
+# logfiles
+*.log
+.idea/
+
+#npm
+yarn.lock
+package-lock.json
