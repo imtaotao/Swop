@@ -12,12 +12,14 @@ export * from './static_store';
  *  get_queue
  *  get_funs
  *  get_all_data
+ *  clear_polling
  *
  *  create 后的接口
  *    set
  *    get
  *    subscribe => remove
- *    remove_all
+ *    remove_all_sub
+ *    polling
  *
  *  响应数据
  *  call.then => [data, {next, param, nextSwopFun}]
