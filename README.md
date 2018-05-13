@@ -88,7 +88,7 @@ swop 可以通过两种方式来实例化。
   const S = CreateSwop<_Swop>(options);
   S.dataOne.get();
 
-  // 第三种，如果你不需要知道绑定属性的类型
+  // 如果你不需要知道绑定属性的类型，你可以这样写
   S['dataOne'].get();
 ```
 ## swop 类 api
@@ -327,7 +327,7 @@ polling 会不停的对客户端进行 call，以此更新当前绑定数据的�
 
   S.dataOne.polling();
 ```
-polling 方法在内部没用采用定时器的方法来轮询，不会带来大的内存开销。关于清除所有绑定属性的轮询，可以看这里 [clear_polling][clear_polling]。
+polling 方法在内部没有采用定时器的方法来轮询，所以不会带来大的内存开销。关于清除所有绑定属性的轮询，可以看这里 [clear_polling][clear_polling]。
 
 ## 约定
 swop 使用约定好的数据格式与客户端进行交互，这需要客户端的开发者配合。
