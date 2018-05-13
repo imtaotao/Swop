@@ -1,3 +1,4 @@
+import { Swop } from './swop';
 import { Tool } from './tool';
 export declare type MonitorFun = (new_value: any, old_value: any) => void;
 export interface DataValue {
@@ -18,8 +19,9 @@ export interface ContainerDataTypes<I, D> extends ContainerDataBaseTypes {
 export interface DataContainerClass<I, R, D> extends Tool {
     init(): void;
     get_container_context(): Tool;
-    create(name: D, init_value?: any, read_only?: boolean): DataContainer<I, R, D>;
+    create(name: D, init_value?: any, read_only?: boolean): Swop<I, R>;
     get_all_data(): DataValue;
+    clear_polling(name?: keyof R): Swop<I, R>;
 }
 export declare class DataContainer<I, R, D> extends Tool implements DataContainerClass<I, R, D> {
     types: StaticData<I, R>;
@@ -30,8 +32,8 @@ export declare class DataContainer<I, R, D> extends Tool implements DataContaine
     private define_subscribe_data(name, init_value, read_only);
     private create_static_data(name, init_value, read_only);
     init(): void;
-    get_container_context(): DataContainer<I, R, D>;
+    get_container_context(): Tool;
     get_all_data(): DataValue;
-    create(name: D, init_value?: any, read_only?: boolean): DataContainer<I, R, D>;
-    clear_polling(name?: keyof R): void;
+    create(name: D, init_value?: any, read_only?: boolean): Swop<I, R>;
+    clear_polling(name?: keyof R): Swop<I, R>;
 }

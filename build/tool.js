@@ -29,7 +29,6 @@ export class Tool {
     random_str(range) {
         return random_str();
     }
-    ;
     sync_promise() {
         return sync_promise();
     }
@@ -42,6 +41,5 @@ export function warn(error_text, is_warn = false) {
     if (!is_warn) {
         throw Error(message);
     }
-    ;
     console.warn(message);
 }

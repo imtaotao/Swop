@@ -58,7 +58,7 @@ export interface ToolTypes {
 export class Tool implements ToolTypes {
   public random_str (range?:number) : string {
     return random_str();
-  };
+  }
 
   public sync_promise () : syncPromiseReturn {
     return sync_promise();
@@ -74,6 +74,6 @@ export function warn (error_text:string, is_warn = false) : void {
 
   if (!is_warn) {
     throw Error(message);
-  };
+  }
   console.warn(message);
 }

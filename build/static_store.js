@@ -123,6 +123,7 @@ export class DataContainer extends Tool {
     clear_polling(name) {
         if (name) {
             this.polling_clump[name]();
+            return this;
         }
         const names = Object.keys(this.polling_clump);
         const length = names.length;
@@ -130,5 +131,6 @@ export class DataContainer extends Tool {
         for (; i < length; i++) {
             this.polling_clump[names[i]]();
         }
+        return this;
     }
 }

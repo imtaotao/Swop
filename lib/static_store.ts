@@ -38,8 +38,9 @@ export interface ContainerDataTypes<I, D> extends ContainerDataBaseTypes {
 export interface DataContainerClass<I, R, D> extends Tool {
   init () : void;
   get_container_context () : Tool;
-  create (name:D, init_value?:any, read_only?:boolean) : DataContainer<I, R, D>;
+  create (name:D, init_value?:any, read_only?:boolean) : Swop<I, R>;
   get_all_data () : DataValue;
+  clear_polling (name?:keyof R) : Swop<I, R>;
 }
 
 export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I, R, D> {
@@ -175,7 +176,7 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
     this.types = <any>this;
   }
 
-  public get_container_context () : DataContainer<I, R, D> {
+  public get_container_context () : Tool {
     let context = this;
     while (context.constructor !== DataContainer) {
       context = Object.getPrototypeOf(context);
@@ -188,15 +189,16 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
     return this.states;
   }
 
-  public create (name:D, init_value?:any, read_only = false) : DataContainer<I, R, D> {
+  public create (name:D, init_value?:any, read_only = false) : Swop<I, R> {
     this.create_static_data(name, init_value, read_only);
 
-    return this;
+    return <any>this;
   }
 
-  public clear_polling (name?: keyof R) {
+  public clear_polling (name?: keyof R) : Swop<I, R> {
     if (name) {
       this.polling_clump[name]()
+      return <any>this;
     }
 
     const names = Object.keys(this.polling_clump);
@@ -206,5 +208,7 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
     for (; i < length; i++) {
       this.polling_clump[<keyof R>names[i]]();
     }
+
+    return <any>this;
   }
 }
