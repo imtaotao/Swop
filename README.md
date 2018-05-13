@@ -220,11 +220,13 @@ clear_polling 方法清除绑定属性的轮询。如果`name`为空，则清空
 
 ```javascript
   S.clear_polling(name);
+  // or
+  S.clear_polling();
 ```
 
 
 ## states api
-当通过`create`api创建一个静态属性后，每个静态属性都会生成对应的方法，需要注意的是当生成的绑定数据是`readOnly`时，当前绑定属性只有`get`方法。
+当通过`create` api 创建一个静态属性后，每个静态属性都会生成对应的方法，需要注意的是当生成的绑定数据是`readOnly`时，当前绑定属性只有`get`方法。
 
 - 假定以下 **api** 描述的绑定属性名为 dataOne。
 ### get
