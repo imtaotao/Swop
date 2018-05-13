@@ -1,14 +1,14 @@
 # Welcome to the Swop  🎉🎉🎉
 
-swop 是一个用于`JavaScript`与客户端进行数据交互应用程序，他提供了简洁的api来帮助开发者来做这些事情。
+swop 是一个用于`JavaScript`与客户端进行数据交互应用程序，他提供了简洁的api来帮助开发者来做这些事情。
 
-## swop 的来源
+## swop 的来源
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 在我们与客户端交互的时候，大量的数据散落在项目各个文件，或者集中于繁琐的`redux`和`window`对象之中，管理维护困难，操作麻烦，使得开发效率很低。
 
 ## swap 要解决什么样的问题
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-swop 使用[`aop`](aop_wiki)的理念进行设计开发，通过对于数据的阶段式操作来做一些事情，类似`express`和`redux`swop 能让开发者更好的处理数据，更好的异步和错误处理。
+swop 使用[`aop`](aop_wiki)的理念进行设计开发，通过对于数据的阶段式操作来做一些事情，类似`express`和`redux`swop 能让开发者更好的处理数据，更好的异步和错误处理。
 
 ## API
 ### options
@@ -18,7 +18,7 @@ swop 使用[`aop`](aop_wiki)的理念进行设计开发，通过对于数据�
   - json_parse（default false） ——
   客户端响应时是否让 swop 对传输的数据进行json parse。
 
-### swop 类接口
+### swop 类接口
   - call
   - response
   - use
@@ -27,7 +27,7 @@ swop 使用[`aop`](aop_wiki)的理念进行设计开发，通过对于数据�
   - get_funs
   - clear_polling
 
-### states 接口
+### states 接口
   - get
   - set
   - subscribe
@@ -50,7 +50,7 @@ swop 可以通过两种方式来实例化。
 
   S.dataOne.set(2).get();
 ```
-如果你是用`typescript`进行的开发
+如果你是用`typescript`进行的开发
 ```typescript
   import { Swop, CreateSwop } from 'swop-data';
   import {
@@ -98,11 +98,11 @@ swop 可以通过两种方式来实例化。
 
 ### call
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-call 函数是于客户端进行通信的入口函数，他需要传入一个name字符和需要发送的数据。
+call 函数是于客户端进行通信的入口函数，他需要传入一个name字符和需要发送的数据。
 
 ```javascript
   // name 是于客户端交互的接口名
-  // call 方法会返回一个 promise
+  // call 方法会返回一个 promise
   // value 是客户端返回数据
   S.call(name).then(([value, args]) => {
     ...
@@ -113,12 +113,12 @@ call 函数是于客户端进行通信的入口函数，他需要传入一个na
 ```
 
 ```javascript
-  // 客户端的响应会以队列的形式进行触发，所以你可以这里对数据做一些传递
+  // 客户端的响应会以队列的形式进行触发，所以你可以这里对数据做一些传递
   S.call(name).then(([value, args]) => {
     /**
      * 我们可以在这里拿到客户端的下一次响应
      * args 有三个值
-     *  next 下一次的响应（如果当前环境在这被调用，而下一次响应还没有到达，此时next是一个空函数）不管next函数是否是一个空函数，都必须调用，否则可能会出现下一次响应没有办法触发的情况
+     *  next 下一次的响应（如果当前环境在这被调用，而下一次响应还没有到达，此时next是一个空函数）不管next函数是否是一个空函数，都必须调用，否则可能会出现下一次响应没有办法触发的情况
      *  params 上一次传过来的数据
      *  nextSwopFun 下一次的 call
      */
