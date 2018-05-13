@@ -75,7 +75,7 @@ export class DataContainer extends Tool {
                 let is_can_polling = true;
                 function start_polling(context) {
                     self.call(interface_name, call_data).then(([data, opts]) => {
-                        hook_fun && hook_fun([data, opts]);
+                        hook_fun && hook_fun(data);
                         context.set(data);
                         opts.next();
                         is_can_polling && start_polling(context);

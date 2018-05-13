@@ -135,7 +135,7 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
         let is_can_polling = true;
         function start_polling (context) {
           (<S><any>self).call(<I>interface_name, call_data).then(([data, opts]) => {
-            hook_fun && hook_fun([data, opts]);
+            hook_fun && hook_fun(data);
             context.set(data);
             opts.next();
 
