@@ -12,8 +12,8 @@ export interface ToolTypes {
     convert_json: (data: any, identifier: IdentifierJson, reject: REJECT) => string | any;
 }
 export declare class Tool implements ToolTypes {
-    constructor();
     random_str(range?: number): string;
     sync_promise(): syncPromiseReturn;
     convert_json(data: any, identifier: IdentifierJson, reject: REJECT): string | any;
 }
+export declare function warn(error_text: string, is_warn?: boolean): void;

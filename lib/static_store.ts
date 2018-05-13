@@ -1,11 +1,5 @@
 import { Swop } from './swop';
-import { Tool } from './tool';
-
-export type MonitorFun = (new_value:any, old_value:any) => void;
-
-export interface DataValue {
-  [s: string]: any;
-}
+import { Tool, warn } from './tool';
 
 interface MonitorUint {
   fun:MonitorFun;
@@ -16,20 +10,29 @@ interface DataObserverTypes {
   [s: string]: MonitorUint[];
 }
 
+type PollingClump<R> = {
+  [P in keyof R]: () => void;
+}
 
+export type MonitorFun = (new_value:any, old_value:any) => void;
 
-export type StaticData<R> = {
-  [P in keyof R]: ContainerDataTypes;
+export interface DataValue {
+  [s: string]: any;
+}
+
+export type StaticData<I, R> = {
+  [P in keyof R]: ContainerDataTypes<I, keyof R>;
 }
 
 export interface ContainerDataBaseTypes {
   get: () => any;
 }
 
-export interface ContainerDataTypes extends ContainerDataBaseTypes {
+export interface ContainerDataTypes<I, D> extends ContainerDataBaseTypes {
   subscribe: (monitor_fun:MonitorFun, once?:boolean) => () => void ;
-  remove_all_sub: () => ContainerDataTypes;
-  set: (value:any) => ContainerDataTypes;
+  remove_all_sub: () => ContainerDataTypes<I, D>;
+  polling (interface_name?:I | D, call_data?:any, hook_fun?:any) : () => void;
+  set: (value:any) => ContainerDataTypes<I, D>;
 }
 
 export interface DataContainerClass<I, R, D> extends Tool {
@@ -40,9 +43,10 @@ export interface DataContainerClass<I, R, D> extends Tool {
 }
 
 export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I, R, D> {
-  public types: StaticData<R>;
+  public types: StaticData<I, R>;
   private states: DataValue;
   private observer: DataObserverTypes;
+  private polling_clump: PollingClump<R>;
 
 
   private publish_observer (monitor_uint_arr:MonitorUint[], new_value:any, old_value:any) {
@@ -91,7 +95,7 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
       return;
     }
 
-    (<ContainerDataTypes>self[<string>name]) = {
+    (<ContainerDataTypes<I, D>>self[<string>name]) = {
       // 用于监听数据变化
       subscribe (monitor_fun:MonitorFun, once = false) {
         const obj:MonitorUint = {
@@ -119,11 +123,33 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
           }
         };
       },
-      remove_all_sub () : ContainerDataTypes {
+      remove_all_sub () : ContainerDataTypes<I, D> {
         self.observer[<string>name] = [];
         return this;
       },
-      set (value:any) : ContainerDataTypes {
+      polling (interface_name?:I | D, call_data?:any, hook_fun?:any) : () => void {
+        !interface_name && (interface_name = <D>name);
+        type S = Swop<I, R>;
+
+        let is_can_polling = true;
+        function start_polling (context) {
+          (<S><any>self).call(<I>interface_name, call_data).then(([data, opts]) => {
+            hook_fun && hook_fun([data, opts]);
+            context.set(data);
+            opts.next();
+
+            is_can_polling && start_polling(context);
+          });
+        }
+        
+        start_polling(this);
+        
+        const clear = () => is_can_polling = false;
+        self.polling_clump[<keyof R>name] = clear;
+
+        return clear;
+      },
+      set (value:any) : ContainerDataTypes<I, D> {
         const new_value = {
           value,
           match: name,
@@ -142,6 +168,13 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
     }
   }
 
+  public init () {
+    this.states = {};
+    this.observer = {};
+    this.polling_clump = <any>{};
+    this.types = <any>this;
+  }
+
   public get_container_context () : DataContainer<I, R, D> {
     let context = this;
     while (context.constructor !== DataContainer) {
@@ -149,12 +182,6 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
     }
 
     return context;
-  }
-
-  public init () {
-    this.states = {};
-    this.observer = {};
-    this.types = <any>this;
   }
 
   public get_all_data () : DataValue {
@@ -165,5 +192,19 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
     this.create_static_data(name, init_value, read_only);
 
     return this;
+  }
+
+  public clear_polling (name?: keyof R) {
+    if (name) {
+      this.polling_clump[name]()
+    }
+
+    const names = Object.keys(this.polling_clump);
+    const length = names.length;
+    let i = 0;
+
+    for (; i < length; i++) {
+      this.polling_clump[<keyof R>names[i]]();
+    }
   }
 }

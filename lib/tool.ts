@@ -15,15 +15,15 @@ export interface syncPromiseReturn{
 }
 
 function sync_promise () : syncPromiseReturn {
-  let resolve
-  let reject
+  let resolve;
+  let reject;
 
-  const _promise:Promise<never> = new Promise((re, rj) => {
-    resolve = re
-    reject = rj
+  const _promise:Promise<never> = new Promise((_resolve, _reject) => {
+    resolve = _resolve;
+    reject = _reject;
   })
 
-  return { promise:_promise, resolve, reject }
+  return { promise:_promise, resolve, reject };
 }
 
 
@@ -37,8 +37,7 @@ function convert_json (data:sendData, identifier:IdentifierJson, reject:REJECT) 
 }
 
 // 生成随机字符串
-function random_str (range?:number) : string;
-function random_str (range = 16) {
+function random_str (range = 16) : string {
   const chart_str:string = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIGKMLNOPQRSTUVWSYZ_!~@#$%^&*()+=-><,.?/';
   const randomNum:randomNumTypes = () => parseInt(String(Math.random() * chart_str.length));
   let str:string = '';
@@ -47,7 +46,7 @@ function random_str (range = 16) {
     str += chart_str[randomNum()];
   }
 
-  return str;
+  return str + '_:_swopid';
 }
 
 export interface ToolTypes {
@@ -57,10 +56,8 @@ export interface ToolTypes {
 }
 
 export class Tool implements ToolTypes {
-  constructor () {}
-
   public random_str (range?:number) : string {
-    return random_str()
+    return random_str();
   };
 
   public sync_promise () : syncPromiseReturn {
@@ -70,4 +67,13 @@ export class Tool implements ToolTypes {
   public convert_json (data:any, identifier:IdentifierJson, reject:REJECT) : string | any {
     return convert_json(data, identifier, reject);
   }
+}
+
+export function warn (error_text:string, is_warn = false) : void {
+  const message = `${error_text} --- from Swop.js.`;
+
+  if (!is_warn) {
+    throw Error(message);
+  };
+  console.warn(message);
 }
