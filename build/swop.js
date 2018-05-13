@@ -144,6 +144,7 @@ export class Swop extends DataContainer {
                     let next_Swop_fun = (funs[0] || compatible).fun_body;
                     if (current_call_fun) {
                         current_call_fun(next, next_Swop_fun, data, ...args);
+                        resolve(true);
                     }
                 });
             }
