@@ -22,9 +22,9 @@ export type Store<I> = {
 }
 
 export type storeFunBody = (
-  next:UnitFun<any>,
-  nextSwopFun:storeFunBody,
-  data:any,
+  next: UnitFun<any>,
+  nextSwopFun: storeFunBody,
+  data: any,
   ...params:any[]
 ) => void;
 

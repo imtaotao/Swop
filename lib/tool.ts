@@ -9,9 +9,9 @@ export type RESOLVE = (value?: any) => void;
 export type REJECT = (reason?: any) => void;
 
 export interface syncPromiseReturn{
-  promise:Promise<never>;
-  resolve:RESOLVE;
-  reject:REJECT;
+  promise: Promise<never>;
+  resolve: RESOLVE;
+  reject: REJECT;
 }
 
 function sync_promise () : syncPromiseReturn {

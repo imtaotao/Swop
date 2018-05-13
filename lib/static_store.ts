@@ -2,8 +2,8 @@ import { Swop } from './swop';
 import { Tool, warn } from './tool';
 
 interface MonitorUint {
-  fun:MonitorFun;
-  once:boolean;
+  fun: MonitorFun;
+  once: boolean;
 }
 
 interface DataObserverTypes {
