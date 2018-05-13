@@ -100,7 +100,7 @@ call 方法是于客户端进行通信的入口函数，他需要传入一个nam
 
 ```javascript
   // name 是于客户端交互的接口名
-  // data 传输给客户端的数据，默认为 null
+  // data 传输给客户端的数据，默认为 null
   // call 方法会返回一个 promise
   // value 是客户端返回数据
   S.call(name, data).then(([value, args]) => {
@@ -158,13 +158,13 @@ create 方法会创建一个绑定属性和绑定数据，返回值为`this`。
   /**
    * attr_name : 绑定数据名
    * default_value : 创建绑定数据时默认值
-   * read_only : 数据是否只读
-   * 需要注意的是，当创建的数据是只读数据时，直接修改此数据的值也是不被允许的
+   * read_only : 数据是否只读
+   * 需要注意的是，当创建的数据是只读数据时，直接修改此数据的值也是不被允许的
   */
   S.create(attr_name, default_value, read_only)
    .create(attr_name);
 
-  // 当创建一个绑定属性后，会在 swop 实例上生成一同名的绑定属性
+  // 当创建一个绑定属性后，会在 swop 实例上生成一同名的绑定属性
   // 需要注意的事项可以看实例化时的注释
 ```
 
@@ -173,7 +173,7 @@ create 方法会创建一个绑定属性和绑定数据，返回值为`this`。
 use 方法是 swop 提供的一个中间件函数，你可以通过 use 方法来注入一些中间件，中间件的注入与*先后顺序*相关，use 方法返回的是`this`，所以你可以像 jQuery 那样链式调用。
 
 ```javascript
-  // name match字符，接口名或者'*'，当为通配符的时候，所有的接口都会匹配上
+  // name match字符，接口名或者'*'，当为通配符的时候，所有的接口都会匹配上
   // val 有两个属性 value 和 match 
   S.use(name, val => {
     // 需要注意的是，use 方法的回调参数，swop 改成了引用的方式，所以你不需要纠结这里怎么没有`return`关键字
@@ -255,6 +255,11 @@ set 方法会给当前绑定数据重新复制，返回值是当前绑定属性
   S.use('dataOne', val => val.value *= 100);
 
   S.dataOne.set(1).get(); // 100
+
+  // 但是最常用的应该是客户端数据上报时用，假定客户端上报于 window.report
+  window.report = (data_name, data) => {
+    S[data_name].set(data);
+  }
 ```
 
 ### subscribe
@@ -263,7 +268,7 @@ subscribe 方法会对绑定数据进行监听，返回一个 remove 函数，�
 
 ```javascript
   // S.dataOne.subscribe(fun, once);
-  // fun : 监听回调接受两个参数，分别为新值和旧值
+  // fun : 监听回调接受两个参数，分别为新值和旧值
   // once : 此次监听是否只触发一次
   S.create('dataOne');
 
@@ -285,7 +290,7 @@ subscribe 方法会对绑定数据进行监听，返回一个 remove 函数，�
 subscribe 方法会对绑定数据进行监听，需要手动一个个的注销掉监听，你会不会觉得太麻烦呢？remove_all_sub 就是一个可以省事的 api，返回值为`this`。
 
 ```javascript
-  // 使用起来也很简单
+  // 使用起来也很简单
   S.dataOne.remove_all_sub();
 ```
 
@@ -338,7 +343,7 @@ polling 会不停的对客户端进行 call，以此更新当前绑定数据的�
   S.dataOne.polling();
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-polling 方法在内部没用采用定时器的方法来轮询，不会带来大的内存开销。关于清除所有绑定属性的轮询，可以看这里 [clear_polling][clear_polling]。
+polling 方法在内部没用采用定时器的方法来轮询，不会带来大的内存开销。关于清除所有绑定属性的轮询，可以看这里 [clear_polling][clear_polling]。
 
 ## 约定
 swop 使用约定好的数据格式与客户端进行交互，这需要客户端的开发者配合。
@@ -365,6 +370,8 @@ id 和 origin_data 是唯一约定好的字段名，不应该带有其他的数�
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 如果响应数据的格式是 json，但在初始化实例的时候并没有让 swop 做 json 的解析，那么 swop 会通过正则表达式来截取真正需要的数据，需要注意带来的运行时开销。
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+绑定数据的更新也不应该通过 polling 函数来实现更新，客户端应该在数据发生变化时，数据上报给 JavaScript，通过绑定属性的 [set][set] 方法实现更新
 
 
 [npm_Swop]:https://www.npmjs.com/package/swop-store
