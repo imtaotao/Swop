@@ -191,14 +191,14 @@ get_all_data 能够获取所有的绑定数据。
 ```
 
 ### get_queue
-swop 把当前接口的所有响应都放到一个队列里面，get_queue 方法会返回当前接口的响应队列
+swop 把当前接口的所有客户端响应都放到一个队列里面，get_queue 方法会返回当前接口的客户端响应队列。
 
 ```javascript
   const queqe = S.get_queue(name);
 ```
 
 ### get_funs
-当调用 call 方法与客户端进行数据交互时，会生成一个响应集合，每个集合由一个`fun_body`和`id`组成。get_funs 能够得到当前接口的所有响应集合
+当调用 call 方法与客户端进行数据交互时，会生成一个接收客户端响应的集合，每个集合由一个`fun_body`和`id`组成。get_funs 能够得到当前接口的所有集合。
 
 ```javascript
   const funs = S.get_funs(name);
@@ -305,6 +305,8 @@ polling 会不停的对客户端进行 call，以此更新当前绑定数据的�
       }, 100)
     }, 100)
   }
+
+  polling();
 ```
 
 ```javascript
