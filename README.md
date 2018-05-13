@@ -8,14 +8,14 @@ swop 是一个用于`JavaScript`与客户端进行数据交互应用程序，他
 
 ## swop 要解决什么样的问题
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-swop 使用[`aop`][aop_wiki]的理念进行设计开发，通过对于数据的阶段式操作来做一些事情，类似`express`和`redux`swop 能让开发者更好的处理数据，更好的异步和错误处理。
+swop 使用[`aop`][aop_wiki]的理念进行设计开发，通过对于数据的阶段式操作来做一些事情，类似`express`和`redux`，swop 能让开发者更好的处理数据，更好的异步和错误处理。
 
 ## API
 ### options
-  - json_stringify（default false） ——
-  于客户端交互时是否让 swop 对传输的数据进行json stringify。
+  - **json_stringify**（default false）：
+  与客户端交互时是否让 swop 对传输的数据进行json stringify。
 
-  - json_parse（default false） ——
+  - **json_parse**（default false）：
   客户端响应时是否让 swop 对传输的数据进行json parse。
 
 ### [swop 类 api][swop_api]
@@ -36,7 +36,6 @@ swop 使用[`aop`][aop_wiki]的理念进行设计开发，通过对于数据的�
   - [polling][polling]
 
 ### 实例化 swop
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 swop 可以通过两种方式来实例化。
 
 ```javascript
@@ -53,7 +52,6 @@ swop 可以通过两种方式来实例化。
 ```
 如果你是用`typescript`进行的开发
 ```typescript
-  import { Swop, CreateSwop } from 'swop-data';
   import {
     Swop,
     CreateSwop,
@@ -95,7 +93,6 @@ swop 可以通过两种方式来实例化。
 ```
 ## swop 类 api
 ### call
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 call 方法是于客户端进行通信的入口函数，他需要传入一个name字符和需要发送的数据。
 
 ```javascript
@@ -133,7 +130,6 @@ call 方法是于客户端进行通信的入口函数，他需要传入一个nam
 ```
 
 ### response
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 response 方法是客户端的入口函数。返回一个promise。
 
 ```javascript
@@ -151,7 +147,6 @@ response 方法是客户端的入口函数。返回一个promise。
 ```
 
 ### create
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 create 方法会创建一个绑定属性和绑定数据，返回值为`this`。
 
 ```javascript
@@ -169,7 +164,6 @@ create 方法会创建一个绑定属性和绑定数据，返回值为`this`。
 ```
 
 ### use
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 use 方法是 swop 提供的一个中间件函数，你可以通过 use 方法来注入一些中间件，中间件的注入与*先后顺序*相关，use 方法返回的是`this`，所以你可以像 jQuery 那样链式调用。
 
 ```javascript
@@ -190,7 +184,6 @@ use 方法是 swop 提供的一个中间件函数，你可以通过 use 方法�
 ```
 
 ### get_all_data
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 get_all_data 能够获取所有的绑定数据。
 
 ```javascript
@@ -198,7 +191,6 @@ get_all_data 能够获取所有的绑定数据。
 ```
 
 ### get_queue
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 swop 把当前接口的所有响应都放到一个队列里面，get_queue 方法会返回当前接口的响应队列
 
 ```javascript
@@ -206,7 +198,6 @@ swop 把当前接口的所有响应都放到一个队列里面，get_queue 方�
 ```
 
 ### get_funs
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 当调用 call 方法与客户端进行数据交互时，会生成一个响应集合，每个集合由一个`fun_body`和`id`组成。get_funs 能够得到当前接口的所有响应集合
 
 ```javascript
@@ -225,7 +216,6 @@ swop 把当前接口的所有响应都放到一个队列里面，get_queue 方�
 ```
 
 ### clear_polling
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 clear_polling 方法清除绑定属性的轮询。如果`name`为空，则清空所有绑定属性的轮询，返回值为`this`。
 
 ```javascript
@@ -234,7 +224,6 @@ clear_polling 方法清除绑定属性的轮询。如果`name`为空，则清空
 
 
 ## states api
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 当通过`create`api创建一个静态属性后，每个静态属性都会生成对应的方法，需要注意的是当生成的绑定数据是`readOnly`时，当前绑定属性只有`get`方法。
 
 - 假定以下 **api** 描述的绑定属性名为 dataOne。
@@ -244,7 +233,6 @@ clear_polling 方法清除绑定属性的轮询。如果`name`为空，则清空
 ```
 
 ### set
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 set 方法会给当前绑定数据重新复制，返回值是当前绑定属性
 ```javascript
   S.dataOne.set(1);
@@ -263,7 +251,6 @@ set 方法会给当前绑定数据重新复制，返回值是当前绑定属性
 ```
 
 ### subscribe
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 subscribe 方法会对绑定数据进行监听，返回一个 remove 函数，用于注销当前的监听。
 
 ```javascript
@@ -286,7 +273,6 @@ subscribe 方法会对绑定数据进行监听，返回一个 remove 函数，�
 ```
 
 ### remove_all_sub
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 subscribe 方法会对绑定数据进行监听，需要手动一个个的注销掉监听，你会不会觉得太麻烦呢？remove_all_sub 就是一个可以省事的 api，返回值为`this`。
 
 ```javascript
@@ -295,7 +281,6 @@ subscribe 方法会对绑定数据进行监听，需要手动一个个的注销�
 ```
 
 ### polling
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 polling 会不停的对客户端进行 call，以此更新当前绑定数据的值，返回值为 stop 函数，用于终止轮询。
 
 ```javascript
@@ -342,7 +327,6 @@ polling 会不停的对客户端进行 call，以此更新当前绑定数据的�
 
   S.dataOne.polling();
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 polling 方法在内部没用采用定时器的方法来轮询，不会带来大的内存开销。关于清除所有绑定属性的轮询，可以看这里 [clear_polling][clear_polling]。
 
 ## 约定
