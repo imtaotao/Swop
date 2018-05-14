@@ -36,8 +36,7 @@ function polling (name:string) {
   document.body.appendChild(div);
 
   const remove = C[name].subscribe((new_v, old_v) => {
-    new_v.name && (new_v = new_v.name);
-    div.innerHTML = new_v;
+    div.innerHTML = new_v.name;
   });
   
   const p = C[name].polling();
@@ -48,7 +47,7 @@ function polling (name:string) {
     _ids.forEach((id:string, index:number) => {
       C.response(<any>JSON.stringify({
         origin_data: {
-          name: name + i
+          name: i + 's',
         },
         id,
       }))
@@ -56,6 +55,7 @@ function polling (name:string) {
     i++;
   }, 1000)
 
+  i++
   return {
     remove,
     p,

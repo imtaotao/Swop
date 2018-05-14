@@ -69,9 +69,9 @@ swop 可以通过两种方式来实例化。
 
   // 实时变化数据存储容器
   export type D = {
-    "dataOne": A;
-    "dataTwo": A;
-    "dataThree": A;
+    'dataOne': A;
+    'dataTwo': A;
+    'dataThree': A;
   }
 
   /**
@@ -153,12 +153,10 @@ response 方法是客户端的入口函数。返回一个promise。
 create 方法会创建一个绑定属性和绑定数据，返回值为`this`。
 
 ```javascript
-  /**
-   * attr_name : 绑定数据名
-   * default_value : 创建绑定数据时默认值
-   * read_only : 数据是否只读
-   * 需要注意的是，当创建的数据是只读数据时，直接修改此数据的值也是不被允许的
-  */
+   // attr_name : 绑定数据名
+   // default_value : 创建绑定数据时默认值
+   // read_only : 数据是否只读
+   // 需要注意的是，当创建的数据是只读数据时，直接修改此数据的值也是不被允许的
   S.create(attr_name, default_value, read_only)
    .create(attr_name);
 
@@ -255,6 +253,17 @@ set 方法会给当前绑定数据重新复制，返回值是当前绑定属性
   }
 ```
 
+当跟改数据时，虽然 swop 对榜单数据的值直接变动也能监听，但是正确的做法应该通过 set 方法来赋值。
+```javascript
+  // 榜单数据直接赋值也能被监听到
+  S.dataOne.subscribe(new_value => {
+    ...
+  })
+
+  S.get_all_data().dataOne = 1;
+
+```
+
 ### subscribe
 subscribe 方法会对绑定数据进行监听，返回一个 remove 函数，用于注销当前的监听。
 
@@ -334,7 +343,7 @@ polling 会不停的对客户端进行 call，以此更新当前绑定数据的�
 
   S.dataOne.polling();
 ```
-polling 方法在内部没有采用定时器的方法来轮询，所以不会带来大的内存开销。关于清除所有绑定属性的轮询，可以看这里 [clear_polling][clear_polling]。
+polling 方法在内部没有采用定时器的方法来轮询，所以不会带来大的内存开销。当返回的数据没有变动时候，polling 方法会降低轮询的频率，减少运行时的开销，关于清除所有绑定属性的轮询，可以看这里 [clear_polling][clear_polling]。
 
 ## 约定
 swop 使用约定好的数据格式与客户端进行交互，这需要客户端的开发者配合。
