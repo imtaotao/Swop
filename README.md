@@ -74,10 +74,8 @@ swop 可以通过两种方式来实例化。
     'dataThree': A;
   }
 
-  /**
-   * 通过 new 来创建的实例，在调用 create 方法
-   * 绑定数据后，没有办法通过实例拿到绑定属性的类型
-   */
+  // 通过 new 来创建的实例，在调用 create 方法
+  // 绑定数据后，没有办法通过实例拿到绑定属性的类型
   const S = new Swop<I, D>(options);
   S.creata('dataOne');
   // 这种情况下 dataOne 的类型没有办法推断出来，但有两种办法可以拿到绑定数据的类型
