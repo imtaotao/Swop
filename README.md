@@ -1,4 +1,6 @@
-# Welcome to the [Swop][npm_Swop]  🎉🎉🎉
+# Welcome to the Swop  🎉🎉🎉
+
+### [npm][npm_Swop]
 
 swop 是一个用于`JavaScript`与客户端进行数据交互应用程序，他提供了简洁的`api`来帮助开发者来做这些事情。
 
@@ -8,7 +10,7 @@ swop 是一个用于`JavaScript`与客户端进行数据交互应用程序，他
 
 ## swop 要解决什么样的问题
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-swop 使用[`aop`][aop_wiki]的理念进行设计开发，通过对于数据的阶段式操作来做一些事情，类似`express`和`redux`，swop 能让开发者更好的处理数据，更好的异步和错误处理。
+swop 使用[`aop`][aop_wiki]的理念进行设计开发，通过对于数据的阶段式操作来做一些事情，参考一下`express`和`redux`的`middleware`，swop 能让开发者更好的处理数据，更好的异步和错误处理。
 
 ## API
 ### options
@@ -32,7 +34,7 @@ swop 使用[`aop`][aop_wiki]的理念进行设计开发，通过对于数据的�
   - [get][get]
   - [set][set]
   - [subscribe][subscribe]
-  - [remove_all_sub][remove_all_sub]
+  - [unsubscribe][unsubscribe]
   - [polling][polling]
 
 ### 实例化 swop
@@ -78,7 +80,7 @@ swop 可以通过两种方式来实例化。
    */
   const S = new Swop<I, D>(options);
   S.creata('dataOne');
-  // 这种情况下 dataOne 的类型没有办法推断出来，但有两种办法可以拿到绑定数据的类型 
+  // 这种情况下 dataOne 的类型没有办法推断出来，但有两种办法可以拿到绑定数据的类型
   //  S.dataOne.XX
 
   // 第一种，使用 types 属性
@@ -169,7 +171,7 @@ use 方法是 swop 提供的一个中间件函数，你可以通过 use 方法�
 
 ```javascript
   // name match字符，接口名或者'*'，当为通配符的时候，所有的接口都会匹配上
-  // val 有两个属性 value 和 match 
+  // val 有两个属性 value 和 match
   S.use(name, val => {
     // 需要注意的是，use 方法的回调参数，swop 改成了引用的方式，所以你不需要纠结这里怎么没有`return`关键字
     // 当然，这里如果你要对响应数据做些修改，你不应该用解构，除非你要做的事情与源数据没什么关系
@@ -275,12 +277,12 @@ subscribe 方法会对绑定数据进行监听，返回一个 remove 函数，�
   remove();
 ```
 
-### remove_all_sub
-subscribe 方法会对绑定数据进行监听，需要手动一个个的注销掉监听，你会不会觉得太麻烦呢？remove_all_sub 就是一个可以省事的 api，返回值为`this`。
+### unsubscribe
+subscribe 方法会对绑定数据进行监听，需要手动一个个的注销掉监听，你会不会觉得太麻烦呢？unsubscribe 就是一个可以省事的 api，返回值为`this`。
 
 ```javascript
   // 使用起来也很简单
-  S.dataOne.remove_all_sub();
+  S.dataOne.unsubscribe();
 ```
 
 ### polling
@@ -360,26 +362,26 @@ id 和 origin_data 是唯一约定好的字段名，不应该带有其他的数�
 如果响应数据的格式是 json，但在初始化实例的时候并没有让 swop 做 json 的解析，那么 swop 会通过正则表达式来截取真正需要的数据，需要注意带来的运行时开销。
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-绑定数据的更新也不应该通过 polling 函数来实现更新，客户端应该在数据发生变化时，数据上报给 JavaScript，通过绑定属性的 [set][set] 方法实现更新
+绑定数据的更新也不应该通过 polling 函数来实现更新，客户端应该在数据发生变化时，数据上报给 JavaScript，通过绑定属性的 [set][set] 方法实现更新.
 
 
 [npm_Swop]:https://www.npmjs.com/package/swop-store
 [aop_wiki]: https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E4%BE%A7%E9%9D%A2%E7%9A%84%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1
 
-[swop_api]:https://github.com/imtaotao/Swop#swop-%E7%B1%BB-api-1
-[call]:https://github.com/imtaotao/Swop#call
-[response]:https://github.com/imtaotao/Swop#response
-[create]:https://github.com/imtaotao/Swop#create
-[use]:https://github.com/imtaotao/Swop#use
-[get_all_data]:https://github.com/imtaotao/Swop#get_all_data
-[get_queue]:https://github.com/imtaotao/Swop#get_queue
-[get_funs]:https://github.com/imtaotao/Swop#get_funs
-[clear_polling]:https://github.com/imtaotao/Swop#clear_polling
+[swop_api]:#swop-%E7%B1%BB-api-1
+[call]:#call
+[response]:#response
+[create]:#create
+[use]:#use
+[get_all_data]:#get_all_data
+[get_queue]:#get_queue
+[get_funs]:#get_funs
+[clear_polling]:#clear_polling
 
-[states_api]:https://github.com/imtaotao/Swop#states-api-1
-[get]:https://github.com/imtaotao/Swop#get
-[set]:https://github.com/imtaotao/Swop#set
-[subscribe]:https://github.com/imtaotao/Swop#subscribe
-[remove_all_sub]:https://github.com/imtaotao/Swop#remove_all_sub
-[polling]:https://github.com/imtaotao/Swop#polling
+[states_api]:#states-api-1
+[get]:#get
+[set]:#set
+[subscribe]:#subscribe
+[unsubscribe]:#unsubscribe
+[polling]:#polling
 

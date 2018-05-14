@@ -18,7 +18,7 @@ export * from './static_store';
  *    set
  *    get
  *    subscribe => remove
- *    remove_all_sub
+ *    unsubscribe
  *    polling
  *
  *  响应数据

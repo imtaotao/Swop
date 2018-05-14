@@ -30,7 +30,7 @@ export interface ContainerDataBaseTypes {
 
 export interface ContainerDataTypes<I, D> extends ContainerDataBaseTypes {
   subscribe: (monitor_fun:MonitorFun, once?:boolean) => () => void ;
-  remove_all_sub: () => ContainerDataTypes<I, D>;
+  unsubscribe: () => ContainerDataTypes<I, D>;
   polling (interface_name?:I | D, call_data?:any, hook_fun?:any) : () => void;
   set: (value:any) => ContainerDataTypes<I, D>;
 }
@@ -124,7 +124,7 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
           }
         };
       },
-      remove_all_sub () : ContainerDataTypes<I, D> {
+      unsubscribe () : ContainerDataTypes<I, D> {
         self.observer[<string>name] = [];
         return this;
       },
@@ -142,9 +142,9 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
             is_can_polling && start_polling(context);
           });
         }
-        
+
         start_polling(this);
-        
+
         const clear = () => is_can_polling = false;
         self.polling_clump[<keyof R>name] = clear;
 

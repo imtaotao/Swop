@@ -66,7 +66,7 @@ export class DataContainer extends Tool {
                     }
                 };
             },
-            remove_all_sub() {
+            unsubscribe() {
                 self.observer[name] = [];
                 return this;
             },

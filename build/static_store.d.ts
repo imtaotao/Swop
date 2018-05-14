@@ -12,7 +12,7 @@ export interface ContainerDataBaseTypes {
 }
 export interface ContainerDataTypes<I, D> extends ContainerDataBaseTypes {
     subscribe: (monitor_fun: MonitorFun, once?: boolean) => () => void;
-    remove_all_sub: () => ContainerDataTypes<I, D>;
+    unsubscribe: () => ContainerDataTypes<I, D>;
     polling(interface_name?: I | D, call_data?: any, hook_fun?: any): () => void;
     set: (value: any) => ContainerDataTypes<I, D>;
 }
