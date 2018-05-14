@@ -134,16 +134,21 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
 
         let is_can_polling = true;
         let old_value = null;
+        let repeat_times = 0;
+        
         function start_polling (context) {
           (<S><any>self).call(<I>interface_name, call_data).then(([data, opts]) => {
-            if (data === old_value) {
+            if (repeat_times > 2) {
               setTimeout(() => {
+                repeat_times = 0;
                 opts.next();
                 is_can_polling && start_polling(context);
               }, 1000)
               return;
             }
 
+            if (data === old_value) { repeat_times++; }
+            
             old_value = data;
             hook_fun && hook_fun(data);
             context.set(data);
