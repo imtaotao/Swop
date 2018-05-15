@@ -77,17 +77,16 @@ export class DataContainer extends Tool {
                 let repeat_times = 0;
                 function start_polling(context) {
                     self.call(interface_name, call_data).then(([data, opts]) => {
-                        if (repeat_times > 2) {
+                        if (repeat_times > 2 && (data === old_value)) {
                             setTimeout(() => {
-                                repeat_times = 0;
                                 opts.next();
                                 is_can_polling && start_polling(context);
                             }, 1000);
                             return;
                         }
-                        if (data === old_value) {
-                            repeat_times++;
-                        }
+                        data === old_value
+                            ? repeat_times++
+                            : (repeat_times = 0);
                         old_value = data;
                         hook_fun && hook_fun(data);
                         context.set(data);
