@@ -4,13 +4,13 @@
   "description": "Swop is a small library for data interaction with clients.",
   "main": "./build/index.js",
   "scripts": {
-    "clean": "rm -rf ./build",
     "i": "rm -rf ./node_modules && npm install",
+    "clean": "rm -rf ./build",
     "start": "webpack-dev-server",
     "build": "npm run clean && tsc --project ./release.tsconfig.json",
     "build:dev": "npm run clean && tsc --pretty --noEmitOnError",
     "watch": "tsc --watch --pretty --noEmitOnError",
-    "test": "ava test-*.js"
+    "test": "tsc --target ES5 --lib ES2016 test/unit/*.ts && ava test/unit/*.js"
   },
   "devDependencies": {
     "ava": "^0.20.0",

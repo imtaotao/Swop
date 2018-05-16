@@ -234,7 +234,7 @@ clear_polling 方法清除绑定属性的轮询。如果`name`为空，则清空
 ```
 
 ### set
-set 方法会给当前绑定数据重新复制，返回值是当前绑定属性
+set 方法会给当前绑定数据重新赋值，返回值是当前绑定属性
 ```javascript
   S.dataOne.set(1);
   // or

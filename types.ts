@@ -1,1 +1,2 @@
-declare const require:any;
+type Promise<T> = any
+type Iterator<T> = any
