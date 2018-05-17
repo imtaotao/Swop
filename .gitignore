@@ -16,6 +16,9 @@ node_modules/
 *.log
 .idea/
 
+#test
+test/*/*.js
+
 #npm
 yarn.lock
 package-lock.json
