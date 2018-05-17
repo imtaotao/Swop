@@ -29,6 +29,10 @@
     "type": "git",
     "url": "https://github.com/imtaotao/Swop.git"
   },
+  "keywords": [
+    "swop",
+    "data"
+  ],
   "author": "Supertaotao",
   "license": "ISC"
 }

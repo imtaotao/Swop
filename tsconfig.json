@@ -15,14 +15,13 @@
     "strictNullChecks": true,
     "alwaysStrict":true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
     "target": "ES2016",
     "plugins": [
       { "name": "tslint-language-service"}
     ]
   },
   "include": [
-    "types",  
+    "types",
     "./lib/**/*"
   ],
   "exclude": [
