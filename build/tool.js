@@ -1,11 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function sync_promise() {
-    let resolve;
-    let reject;
-    const _promise = new Promise((_resolve, _reject) => {
+    var resolve;
+    var reject;
+    var _promise = new Promise(function (_resolve, _reject) {
         resolve = _resolve;
         reject = _reject;
     });
-    return { promise: _promise, resolve, reject };
+    return { promise: _promise, resolve: resolve, reject: reject };
 }
 function convert_json(data, identifier, reject) {
     try {
@@ -16,31 +18,37 @@ function convert_json(data, identifier, reject) {
         return data;
     }
 }
-function random_str(range = 16) {
-    const chart_str = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIGKMLNOPQRSTUVWSYZ_!~@#$%^&*()+=-><,.?/';
-    const randomNum = () => parseInt(String(Math.random() * chart_str.length));
-    let str = '';
-    for (let i = 0; i < range; i++) {
+function random_str(range) {
+    if (range === void 0) { range = 16; }
+    var chart_str = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIGKMLNOPQRSTUVWSYZ_!~@#$%^&*()+=-><,.?/';
+    var randomNum = function () { return parseInt(String(Math.random() * chart_str.length)); };
+    var str = '';
+    for (var i = 0; i < range; i++) {
         str += chart_str[randomNum()];
     }
     return str + '_:_swopid';
 }
-export class Tool {
-    random_str(range) {
+var Tool = (function () {
+    function Tool() {
+    }
+    Tool.prototype.random_str = function (range) {
         return random_str();
-    }
-    sync_promise() {
+    };
+    Tool.prototype.sync_promise = function () {
         return sync_promise();
-    }
-    convert_json(data, identifier, reject) {
+    };
+    Tool.prototype.convert_json = function (data, identifier, reject) {
         return convert_json(data, identifier, reject);
-    }
-}
-export function warn(error_text, is_warn = false) {
-    const message = `${error_text} --- from Swop.js.`;
+    };
+    return Tool;
+}());
+exports.Tool = Tool;
+function warn(error_text, is_warn) {
+    if (is_warn === void 0) { is_warn = false; }
+    var message = error_text + " --- from Swop.js.";
     if (!is_warn) {
         throw Error(message);
     }
     console.warn(message);
 }
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidG9vbC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uL2xpYi90b29sLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQWdCQTtJQUNFLElBQUksT0FBTyxDQUFDO0lBQ1osSUFBSSxNQUFNLENBQUM7SUFFWCxNQUFNLFFBQVEsR0FBa0IsSUFBSSxPQUFPLENBQUMsQ0FBQyxRQUFRLEVBQUUsT0FBTyxFQUFFLEVBQUU7UUFDaEUsT0FBTyxHQUFHLFFBQVEsQ0FBQztRQUNuQixNQUFNLEdBQUcsT0FBTyxDQUFDO0lBQ25CLENBQUMsQ0FBQyxDQUFBO0lBRUYsTUFBTSxDQUFDLEVBQUUsT0FBTyxFQUFDLFFBQVEsRUFBRSxPQUFPLEVBQUUsTUFBTSxFQUFFLENBQUM7QUFDL0MsQ0FBQztBQUdELHNCQUF1QixJQUFhLEVBQUUsVUFBeUIsRUFBRSxNQUFhO0lBQzVFLElBQUksQ0FBQztRQUNILE1BQU0sQ0FBQyxDQUFDLElBQUksQ0FBUyxVQUFVLENBQUMsQ0FBQyxDQUFDLElBQUksQ0FBQyxDQUFDO0lBQzFDLENBQUM7SUFBQyxLQUFLLENBQUMsQ0FBQyxLQUFLLENBQUMsQ0FBQyxDQUFDO1FBQ2YsTUFBTSxDQUFDLEtBQUssQ0FBQyxDQUFDO1FBQ2QsTUFBTSxDQUFDLElBQUksQ0FBQztJQUNkLENBQUM7QUFDSCxDQUFDO0FBR0Qsb0JBQXFCLEtBQUssR0FBRyxFQUFFO0lBQzdCLE1BQU0sU0FBUyxHQUFVLHFGQUFxRixDQUFDO0lBQy9HLE1BQU0sU0FBUyxHQUFrQixHQUFHLEVBQUUsQ0FBQyxRQUFRLENBQUMsTUFBTSxDQUFDLElBQUksQ0FBQyxNQUFNLEVBQUUsR0FBRyxTQUFTLENBQUMsTUFBTSxDQUFDLENBQUMsQ0FBQztJQUMxRixJQUFJLEdBQUcsR0FBVSxFQUFFLENBQUM7SUFFcEIsR0FBRyxDQUFDLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsR0FBRyxLQUFLLEVBQUUsQ0FBQyxFQUFFLEVBQUUsQ0FBQztRQUMvQixHQUFHLElBQUksU0FBUyxDQUFDLFNBQVMsRUFBRSxDQUFDLENBQUM7SUFDaEMsQ0FBQztJQUVELE1BQU0sQ0FBQyxHQUFHLEdBQUcsV0FBVyxDQUFDO0FBQzNCLENBQUM7QUFRRCxNQUFNO0lBQ0csVUFBVSxDQUFFLEtBQWE7UUFDOUIsTUFBTSxDQUFDLFVBQVUsRUFBRSxDQUFDO0lBQ3RCLENBQUM7SUFFTSxZQUFZO1FBQ2pCLE1BQU0sQ0FBQyxZQUFZLEVBQUUsQ0FBQztJQUN4QixDQUFDO0lBRU0sWUFBWSxDQUFFLElBQVEsRUFBRSxVQUF5QixFQUFFLE1BQWE7UUFDckUsTUFBTSxDQUFDLFlBQVksQ0FBQyxJQUFJLEVBQUUsVUFBVSxFQUFFLE1BQU0sQ0FBQyxDQUFDO0lBQ2hELENBQUM7Q0FDRjtBQUVELE1BQU0sZUFBZ0IsVUFBaUIsRUFBRSxPQUFPLEdBQUcsS0FBSztJQUN0RCxNQUFNLE9BQU8sR0FBRyxHQUFHLFVBQVUsb0JBQW9CLENBQUM7SUFFbEQsRUFBRSxDQUFDLENBQUMsQ0FBQyxPQUFPLENBQUMsQ0FBQyxDQUFDO1FBQ2IsTUFBTSxLQUFLLENBQUMsT0FBTyxDQUFDLENBQUM7SUFDdkIsQ0FBQztJQUNELE9BQU8sQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLENBQUM7QUFDeEIsQ0FBQyJ9
+exports.warn = warn;

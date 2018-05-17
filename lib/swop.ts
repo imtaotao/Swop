@@ -54,7 +54,7 @@ export interface SingleStroeQueue {
 export type Middleware<I, D> = (val:MiddlewareAcceptValue<I, D>) => void;
 
 export interface sendData {
-  origin_data: null | any;
+  origin_data: any;
 	id: FunUnit['id'];
 }
 
@@ -193,7 +193,7 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
     return <any>this;
   }
 
-  public call (name:I, data = null) : Promise<any> {
+  public call (name:I, data?:any) : Promise<any> {
     return new Promise((resolve, reject) => {
       const { store, random_str } = this;
       const fun = this.create_callback(name, resolve);
@@ -222,7 +222,7 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
     })
   }
 
-  public response (data:sendData) : Promise<any> {
+  public response (data:sendData | string) : Promise<any> {
     return new Promise((resolve, reject) => {
       const { store, convert_json, json_parse } = this;
       

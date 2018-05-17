@@ -23,7 +23,7 @@ export interface SingleStroeQueue {
 }
 export declare type Middleware<I, D> = (val: MiddlewareAcceptValue<I, D>) => void;
 export interface sendData {
-    origin_data: null | any;
+    origin_data: any;
     id: FunUnit['id'];
 }
 export interface SwopTypes<I, R, D> extends DataContainer<I, R, D> {
@@ -48,8 +48,8 @@ export declare class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> impl
     private get_json_origin_data(data);
     private send_request(name, data, reject);
     use(match: I | D | '*', fun: Middleware<I, D>): Swop<I, R>;
-    call(name: I, data?: null): Promise<any>;
-    response(data: sendData): Promise<any>;
+    call(name: I, data?: any): Promise<any>;
+    response(data: sendData | string): Promise<any>;
     get_queue(name: I): SingleStroeQueue['queue'];
     get_funs(name: I): SingleStroeQueue['funs'];
 }
