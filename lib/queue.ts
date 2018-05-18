@@ -7,6 +7,8 @@ export type RejisterFun<A> = (next:UnitFun<any>, ...args:A[]) => void;
 export type QueueEndHook = (args: any[]) => void;
 
 export interface QueueTypes {
+  fx:UnitFun<any>[];
+  end:endTypes;
   register<T> (fun:RejisterFun<T>) : Queue;
   emit (...args:any[]) : Queue;
   remove (start:number, end?:number) : Queue;
@@ -14,11 +16,11 @@ export interface QueueTypes {
 
 
 export class Queue implements QueueTypes {
-  private fx:UnitFun<any>[];
+  public fx:UnitFun<any>[];
+  public end:endTypes;
   private lock:boolean;
   private is_init_emit:boolean;
-  public end:endTypes;
-
+  
   constructor () {
     this.fx = [];
     this.lock = false;
