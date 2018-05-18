@@ -64,7 +64,7 @@ test.cb('Test args param', t => {
 
   for (let i = 0; i < 3; i++) {
     s.call('one').then(([res, args]) => {
-      // 第一个应该是 undefined 和 0
+      // the first one is undefined and 0.
       if (i !== 0) { t.is(args.params[0], i - 1); }
       if (i === 2) { t.end(); }
       args.next(i);
