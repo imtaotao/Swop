@@ -32,15 +32,15 @@ C.use('*', (val) => {
 
 function polling (name:string) {
   const div = document.createElement('div');
-  div.style.marginTop = '20px'; 
+  div.style.marginTop = '20px';
   document.body.appendChild(div);
 
   const remove = C[name].subscribe((new_v, old_v) => {
     div.innerHTML = new_v.name;
   });
-  
+
   const p = C[name].polling();
-  
+
   let i = 0;
   setInterval(() => {
     const _ids = C.get_funs(<any>name).map(val => val.id)
@@ -66,3 +66,20 @@ document.addEventListener('DOMContentLoaded', () => {
   (<any>window).t = polling('dataTwo');
   (<any>window).t = polling('dataThree');
 })
+
+
+const data = {
+  xml: '<block type="random_number" id="bfa)uU#[]1r?Ffk_Ah?(" inline="true" x="207" y="87"><value name="min"><shadow type="math_number" id="@jXQ2#kvcSVf?_,tM,LN"><field name="NUM">0</field></shadow></value><value name="max"><shadow type="math_number" id="Xj3[(6e[5pZT7FYi,be)"><field name="NUM">5</field></shadow></value></block>',
+  id: '1111',
+  origin_data: 222,
+}
+
+C.call('interfaceTwo').then(([res, args]) => {
+  console.log(res === JSON.stringify(data));
+  console.log(JSON.parse(res));
+});
+
+C.response(JSON.stringify({
+  origin_data: data,
+  id: C.get_funs('interfaceTwo')[0].id,
+}))

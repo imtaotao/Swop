@@ -10,7 +10,7 @@
     "build": "npm run clean && tsc --project ./release.tsconfig.json",
     "build:dev": "npm run clean && tsc --pretty --noEmitOnError",
     "watch": "tsc --watch --pretty --noEmitOnError",
-    "test": "tsc --target ES5 --lib ES2016 test/unit/*.ts && ava test/unit/*.js"
+    "test": "tsc --target ES5 --lib ES2016 test/unit/*.ts && ava --verbose test/unit/*.js"
   },
   "devDependencies": {
     "ava": "^0.20.0",

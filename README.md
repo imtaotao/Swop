@@ -10,15 +10,15 @@ swop 是一个用于`JavaScript`与客户端进行数据交互应用程序，他
 
 ## swop 要解决什么样的问题
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-swop 使用[`aop`][aop_wiki]的理念进行设计开发，通过对于数据的阶段式操作来做一些事情，参考一下`express`和`redux`的`middleware`，swop 能让开发者更好的处理数据，更好的异步和错误处理。
+swop 使用 [`aop`][aop_wiki] 的理念进行设计开发，通过对于数据的拦截来做一些事情，swop 内置了中间件，参考一下`express`和`redux`的`middleware`，但不同于责任链之类的东西是 swop 的`middleware`没有next函数，swop 能让开发者更好的处理数据，更好的异步和错误处理。
 
 ## API
 ### options
-  - **json_stringify**（default false）：
-  与客户端交互时是否让 swop 对传输的数据进行json stringify。
+  - **json_stringify**：
+  与客户端交互时是否让 swop 对传输的数据进行json stringify，默认值为 `false`。
 
-  - **json_parse**（default false）：
-  客户端响应时是否让 swop 对传输的数据进行json parse。
+  - **json_parse**：
+  客户端响应时是否让 swop 对传输的数据进行json parse，默认值为 `false`。
 
 ### [swop 类 api][swop_api]
   - [call][call]
