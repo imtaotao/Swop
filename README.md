@@ -21,7 +21,7 @@ swop 使用 [`aop`][aop_wiki] 的理念进行设计开发，通过对于数据�
   客户端响应时是否让 swop 对传输的数据进行json parse，默认值为 `false`。
 
 ### swop 类 api
-  - ##### [`call(name, [data])`][call]
+  - #### [`call(name, [data])`][call]
   - #### [`response(data)`][response]
   - #### [`create(attr_name, [default_value], [read_only])`][create]
   - #### [`use(name, fun)`][use]
