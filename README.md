@@ -21,21 +21,21 @@ swop 使用 [`aop`][aop_wiki] 的理念进行设计开发，通过对于数据�
   客户端响应时是否让 swop 对传输的数据进行json parse，默认值为 `false`。
 
 ### swop 类 api
-  - [`call(name, [data])`][call]
-  - [`response(data)`][response]
-  - [`create(attr_name, [default_value], [read_only])`][create]
-  - [`use(name, fun)`][use]
-  - [`get_all_data()`][get_all_data]
-  - [`get_queue(name)`][get_queue]
-  - [`get_funs(name)`][get_funs]
-  - [`clear_polling([name])`][clear_polling]
+  - ##### [`call(name, [data])`][call]
+  - #### [`response(data)`][response]
+  - #### [`create(attr_name, [default_value], [read_only])`][create]
+  - #### [`use(name, fun)`][use]
+  - #### [`get_all_data()`][get_all_data]
+  - #### [`get_queue(name)`][get_queue]
+  - #### [`get_funs(name)`][get_funs]
+  - #### [`clear_polling([name])`][clear_polling]
 
 ### 绑定属性 api
-  - [`get()`][get]
-  - [`set(value)`][set]
-  - [`subscribe(fun)`][subscribe]
-  - [`unsubscribe()`][unsubscribe]
-  - [`polling([name], [data], [fun])`][polling]
+  - #### [`get()`][get]
+  - #### [`set(value)`][set]
+  - #### [`subscribe(fun)`][subscribe]
+  - #### [`unsubscribe()`][unsubscribe]
+  - #### [`polling([name], [data], [fun])`][polling]
 
 ### 实例化 swop
 swop 可以通过两种方式来实例化。
