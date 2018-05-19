@@ -44,3 +44,4 @@ release.tsconfig.json
 index.ts
 index.html
 webpack.config.json
+types.ts

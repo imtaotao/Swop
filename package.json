@@ -1,6 +1,6 @@
 {
   "name": "swop",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Swop is a small library for data interaction with clients.",
   "main": "./build/index.js",
   "scripts": {
@@ -31,8 +31,13 @@
   },
   "keywords": [
     "swop",
-    "data"
+    "data",
+    "store",
+    "interface"
   ],
   "author": "Supertaotao",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "swop-store": "^1.0.5"
+  }
 }
