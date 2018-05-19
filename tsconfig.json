@@ -15,7 +15,7 @@
     "strictNullChecks": true,
     "alwaysStrict":true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2016",
+    "target": "es5",
     "plugins": [
       { "name": "tslint-language-service"}
     ]

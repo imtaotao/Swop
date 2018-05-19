@@ -162,7 +162,10 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
 
         start_polling(this);
 
-        const clear = () => is_can_polling = false;
+        const clear = () => {
+          is_can_polling = false;
+          delete self.polling_clump[<keyof R>name];
+        };
         self.polling_clump[<keyof R>name] = clear;
 
         return clear;
@@ -174,6 +177,10 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
         };
 
         // 中间件
+        // 这是个值得考虑的事情，set 的时候需不需要触发 middleware
+        // polling 的时候，如果接口名和绑定属性名一样
+        // response 和 set 都会触发 middleware，如果 response 的数据不变会导致不一样的行为
+        // 并且会加大 use 时的逻辑复杂度
         (<any>self).call_middleware(name, new_value);
         // 赋值
         self.states[<string>name] = new_value.value;
@@ -207,6 +214,10 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
   }
 
   public create (name:D, init_value?:any, read_only = false) : Swop<I, R> {
+    if (this.states.hasOwnProperty(<any>name)) {
+      warn(`Bind attribute【${name}】already exists`);
+    }
+    
     this.create_static_data(name, init_value, read_only);
 
     return <any>this;
@@ -214,6 +225,9 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
 
   public clear_polling (name?: keyof R) : Swop<I, R> {
     if (name) {
+      if (!this.polling_clump.hasOwnProperty(name)) {
+        warn(`Bind attribute【${name}】above no "polling" to clear`);
+      }
       this.polling_clump[name]()
       return <any>this;
     }

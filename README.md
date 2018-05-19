@@ -20,22 +20,22 @@ swop 使用 [`aop`][aop_wiki] 的理念进行设计开发，通过对于数据�
   - **json_parse**：
   客户端响应时是否让 swop 对传输的数据进行json parse，默认值为 `false`。
 
-### [swop 类 api][swop_api]
-  - [call][call]
-  - [response][response]
-  - [create][create]
-  - [use][use]
-  - [get_all_data][get_all_data]
-  - [get_queue][get_queue]
-  - [get_funs][get_funs]
-  - [clear_polling][clear_polling]
+### swop 类 api
+  - [`call(name, [data])`][call]
+  - [`response(data)`][response]
+  - [`create(attr_name, [default_value], [read_only])`][create]
+  - [`use(name, fun)`][use]
+  - [`get_all_data()`][get_all_data]
+  - [`get_queue(name)`][get_queue]
+  - [`get_funs(name)`][get_funs]
+  - [`clear_polling([name])`][clear_polling]
 
-### [states api][states_api]
-  - [get][get]
-  - [set][set]
-  - [subscribe][subscribe]
-  - [unsubscribe][unsubscribe]
-  - [polling][polling]
+### 绑定属性 api
+  - [`get()`][get]
+  - [`set(value)`][set]
+  - [`subscribe(fun)`][subscribe]
+  - [`unsubscribe()`][unsubscribe]
+  - [`polling([name], [data], [fun])`][polling]
 
 ### 实例化 swop
 swop 可以通过两种方式来实例化。
@@ -186,7 +186,7 @@ use 方法是 swop 提供的一个中间件函数，你可以通过 use 方法�
 get_all_data 能够获取所有的绑定数据。
 
 ```javascript
-  const all_stata = S.get_all_data();
+  const all_data = S.get_all_data();
 ```
 
 ### get_queue
@@ -224,7 +224,7 @@ clear_polling 方法清除绑定属性的轮询。如果`name`为空，则清空
 ```
 
 
-## states api
+## 绑定属性 api
 当通过[`create`][create] api 创建一个静态属性后，每个静态属性都会生成对应的方法，需要注意的是当生成的绑定数据是`readOnly`时，当前绑定属性只有`get`方法。
 
 - 假定以下 **api** 描述的绑定属性名为 dataOne。
@@ -375,7 +375,6 @@ id 和 origin_data 是唯一约定好的字段名，不应该带有其他的数�
 [npm_Swop]:https://www.npmjs.com/package/swop-store
 [aop_wiki]: https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E4%BE%A7%E9%9D%A2%E7%9A%84%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1
 
-[swop_api]:#swop-%E7%B1%BB-api-1
 [call]:#call
 [response]:#response
 [create]:#create
@@ -385,7 +384,6 @@ id 和 origin_data 是唯一约定好的字段名，不应该带有其他的数�
 [get_funs]:#get_funs
 [clear_polling]:#clear_polling
 
-[states_api]:#states-api-1
 [get]:#get
 [set]:#set
 [subscribe]:#subscribe

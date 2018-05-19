@@ -1,4 +1,4 @@
-import { DataContainer } from './static_store';
+import { DataContainer } from './responsive_attr';
 import { QueueTypes, UnitFun } from './queue';
 export declare type Store<I> = {
     [S in keyof I]: SingleStroeQueue;

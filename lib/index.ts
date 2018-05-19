@@ -1,7 +1,7 @@
 export * from './swop';
 export * from './queue';
 export * from './tool';
-export * from './static_store';
+export * from './responsive_attr';
 
 /*  create_Swop
  *  接口

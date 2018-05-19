@@ -105,7 +105,10 @@ var DataContainer = (function (_super) {
                     });
                 }
                 start_polling(this);
-                var clear = function () { return is_can_polling = false; };
+                var clear = function () {
+                    is_can_polling = false;
+                    delete self.polling_clump[name];
+                };
                 self.polling_clump[name] = clear;
                 return clear;
             },
@@ -141,11 +144,17 @@ var DataContainer = (function (_super) {
     };
     DataContainer.prototype.create = function (name, init_value, read_only) {
         if (read_only === void 0) { read_only = false; }
+        if (this.states.hasOwnProperty(name)) {
+            tool_1.warn("Bind attribute\u3010" + name + "\u3011already exists");
+        }
         this.create_static_data(name, init_value, read_only);
         return this;
     };
     DataContainer.prototype.clear_polling = function (name) {
         if (name) {
+            if (!this.polling_clump.hasOwnProperty(name)) {
+                tool_1.warn("Bind attribute\u3010" + name + "\u3011above no \"polling\" to clear");
+            }
             this.polling_clump[name]();
             return this;
         }

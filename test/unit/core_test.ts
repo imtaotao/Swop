@@ -3,14 +3,14 @@ import { Swop, sendData } from '../../build';
 
 declare const console:any;
 declare const setTimeout:any;
-export type InterfaceNames =
+type InterfaceNames =
   'one' |
   'two';
 
 const xml = '<block type="random_number" id="bfa)uU#[]1r?Ffk_Ah?(" inline="true" x="207" y="87"><value name="min"><shadow type="math_number" id="@jXQ2#kvcSVf?_,tM,LN"><field name="NUM">0</field></shadow></value><value name="max"><shadow type="math_number" id="Xj3[(6e[5pZT7FYi,be)"><field name="NUM">5</field></shadow></value></block>';
 const get_ids = (s, name) => s.get_funs(name).map((val) => val.id);
 
-// test base function
+// test base function.
 test.cb('Test call method one', t => {
   t.plan(2);
 
@@ -33,7 +33,7 @@ test.cb('Test call method one', t => {
 })
 
 
-// test reg match json
+// test reg match json.
 test('Test call method two', async t => {
   t.plan(2);
 
@@ -54,7 +54,7 @@ test('Test call method two', async t => {
 })
 
 
-// test send args param and continue response
+// test send args param and continue response.
 test.cb('Test args param', t => {
   t.plan(2);
 
@@ -79,7 +79,7 @@ test.cb('Test args param', t => {
   })
 })
 
-// test send args next function and get_queque
+// test send args next function and get_queue.
 test.cb('Test send args next function and get_queque method', t => {
   t.plan(2);
 
@@ -110,7 +110,7 @@ test.cb('Test send args next function and get_queque method', t => {
   t.is(s.get_queue('one').fx.length, 2);
 })
 
-// test options
+// test options.
 test.cb('Test parse json and stringify json', t => {
   t.plan(2);
 

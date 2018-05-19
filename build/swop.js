@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var tool_1 = require("./tool");
-var static_store_1 = require("./static_store");
+var responsive_attr_1 = require("./responsive_attr");
 var queue_1 = require("./queue");
 var DELIMITER = '_:_';
 var ID_REG = new RegExp(",?\"id\":\"[^}]+" + DELIMITER + ".+_:_swopid\",?", 'g');
@@ -176,7 +176,7 @@ var Swop = (function (_super) {
         return compatible.funs;
     };
     return Swop;
-}(static_store_1.DataContainer));
+}(responsive_attr_1.DataContainer));
 exports.Swop = Swop;
 function CreateSwop(opions) {
     return new Swop(opions);

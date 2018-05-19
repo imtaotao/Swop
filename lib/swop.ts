@@ -1,5 +1,5 @@
 import { RESOLVE, REJECT, warn } from './tool';
-import { DataContainer } from './static_store';
+import { DataContainer } from './responsive_attr';
 import { Queue, QueueTypes, UnitFun } from './queue';
 
 type ThenAcceptTypes = [
