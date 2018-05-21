@@ -1,7 +1,5 @@
 # Welcome to the Swop  🎉🎉🎉
 
-### [npm][npm_Swop]
-
 swop 是一个用于`JavaScript`与客户端进行数据交互应用程序，他提供了简洁的`api`来帮助开发者来做这些事情。
 
 ## swop 的来源
