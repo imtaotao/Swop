@@ -1,4 +1,5 @@
-# Welcome to the Swop  🎉🎉🎉
+# Welcome to the Swop  🎉
+[![NPM Version][npm-image]][npm-url]
 
 ### [npm][npm_Swop]
 
@@ -389,4 +390,6 @@ id 和 origin_data 是唯一约定好的字段名，不应该带有其他的数�
 [subscribe]:#subscribe
 [unsubscribe]:#unsubscribe
 [polling]:#polling
+
+[npm-url]:https://img.shields.io/badge/npm-1.0.6-blue.svg
 
