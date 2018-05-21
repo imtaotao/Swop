@@ -3,6 +3,7 @@
   "version": "1.0.5",
   "description": "Swop is a small library for data interaction with clients.",
   "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "scripts": {
     "i": "rm -rf ./node_modules && npm install",
     "clean": "rm -rf ./build",
@@ -36,8 +37,5 @@
     "interface"
   ],
   "author": "Supertaotao",
-  "license": "ISC",
-  "dependencies": {
-    "swop-store": "^1.0.5"
-  }
+  "license": "ISC"
 }
