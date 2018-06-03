@@ -1,5 +1,6 @@
 import { DataContainer } from './responsive_attr';
 import { QueueTypes, UnitFun } from './queue';
+import { StackDetail } from './debug';
 export declare type Store<I> = {
     [S in keyof I]: SingleStroeQueue;
 };
@@ -39,6 +40,7 @@ export declare class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> impl
     store: Store<I> | any;
     private middleware;
     send: send<I>;
+    onerror: (msg: string, stack: StackDetail, error_str: string) => void;
     constructor({json_stringify, json_parse}?: SwopInitParam);
     private call_middleware(match, params);
     private create_callback(name, resolve);

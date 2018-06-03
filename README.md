@@ -1,4 +1,6 @@
-# Welcome to the Swop  🎉🎉🎉
+# Welcome to the Swop  🎉
+[![npm version][npm-url]][npm_Swop]
+![stars][github_stars]
 
 swop 是一个用于`JavaScript`与客户端进行数据交互应用程序，他提供了简洁的`api`来帮助开发者来做这些事情。
 
@@ -18,22 +20,47 @@ swop 使用 [`aop`][aop_wiki] 的理念进行设计开发，通过对于数据�
   - **json_parse**：
   客户端响应时是否让 swop 对传输的数据进行json parse，默认值为 `false`。
 
+### 钩子函数
+
+  #### swop.send
+  考虑到不同业务场景下的需求不同，swop 最终与客户端交互的时候必须通过 send 方法进行。
+  ```javascript
+    // 可以通过以下方式进行
+    // name 接口名
+    // send_data 经过 swop 包装过的数据
+    // 原始数据
+    S.send = function (name, send_data, origin_data) {
+      ...
+    }
+  ```
+
+  #### swop.onerror
+  swop 提供一个捕捉错误的钩子函数，如果 onerror 函数被定义了, swop 发出的错误都会被捕捉到，否则，swop 会直接在控制台输出错误。
+  ```javascript
+    // msg 错误信息
+    // stack 错误堆栈
+    // error_text swop 将要输出到控制台上的信息
+    S.onerror = function (msg, stack, error_text) {
+      ...
+    }
+  ```  
+
 ### swop 类 api
-  - #### [`call(name, [data])`][call]
-  - #### [`response(data)`][response]
-  - #### [`create(attr_name, [default_value], [read_only])`][create]
-  - #### [`use(name, fun)`][use]
-  - #### [`get_all_data()`][get_all_data]
-  - #### [`get_queue(name)`][get_queue]
-  - #### [`get_funs(name)`][get_funs]
-  - #### [`clear_polling([name])`][clear_polling]
+  - [`call(name, [data])`][call]
+  - [`response(data)`][response]
+  - [`create(attr_name, [default_value], [read_only])`][create]
+  - [`use(name, fun)`][use]
+  - [`get_all_data()`][get_all_data]
+  - [`get_queue(name)`][get_queue]
+  - [`get_funs(name)`][get_funs]
+  - [`clear_polling([name])`][clear_polling]
 
 ### 绑定属性 api
-  - #### [`get()`][get]
-  - #### [`set(value)`][set]
-  - #### [`subscribe(fun)`][subscribe]
-  - #### [`unsubscribe()`][unsubscribe]
-  - #### [`polling([name], [data], [fun])`][polling]
+  - [`get()`][get]
+  - [`set(value)`][set]
+  - [`subscribe(fun)`][subscribe]
+  - [`unsubscribe()`][unsubscribe]
+  - [`polling([name], [data], [fun])`][polling]
 
 ### 实例化 swop
 swop 可以通过两种方式来实例化。
@@ -348,7 +375,7 @@ swop 使用约定好的数据格式与客户端进行交互，这需要客户端
 ```
 {
   origin_data: xxx（真正需要发送的数据）,
-  id: xxx（swop 生成的一段随机字符数）,
+  id: xxx（swop 生成的一段随机字符串）,
 }
 ```
 
@@ -388,3 +415,7 @@ id 和 origin_data 是唯一约定好的字段名，不应该带有其他的数�
 [unsubscribe]:#unsubscribe
 [polling]:#polling
 
+[npm-url]:https://img.shields.io/badge/npm-1.0.6-blue.svg
+[tests]:https://img.shields.io/badge/tests-12%2F12-brightgreen.svg
+[build]:https://img.shields.io/badge/build-passing-green.svg
+[github_stars]:https://img.shields.io/github/stars/imtaotao/Swop.svg
