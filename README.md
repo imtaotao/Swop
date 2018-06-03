@@ -22,7 +22,7 @@ swop 使用 [`aop`][aop_wiki] 的理念进行设计开发，通过对于数据�
 
 ### 钩子函数
 
-  - swop.send
+  #### swop.send
   考虑到不同业务场景下的需求不同，swop 最终与客户端交互的时候必须通过 send 方法进行。
   ```javascript
     // 可以通过以下方式进行
@@ -34,7 +34,7 @@ swop 使用 [`aop`][aop_wiki] 的理念进行设计开发，通过对于数据�
     }
   ```
 
-  - swop.onerror
+  #### swop.onerror
   swop 提供一个捕捉错误的钩子函数，如果 onerror 函数被定义了, swop 发出的错误都会被捕捉到，否则，swop 会直接在控制台输出错误。
   ```javascript
     // msg 错误信息
