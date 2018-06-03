@@ -16,4 +16,3 @@ export declare class Tool implements ToolTypes {
     sync_promise(): syncPromiseReturn;
     convert_json(data: any, identifier: IdentifierJson, reject: REJECT): string | any;
 }
-export declare function warn(error_text: string, is_warn?: boolean): void;

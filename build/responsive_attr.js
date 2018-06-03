@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var tool_1 = require("./tool");
+var debug_1 = require("./debug");
 var DataContainer = (function (_super) {
     tslib_1.__extends(DataContainer, _super);
     function DataContainer() {
@@ -145,7 +146,7 @@ var DataContainer = (function (_super) {
     DataContainer.prototype.create = function (name, init_value, read_only) {
         if (read_only === void 0) { read_only = false; }
         if (this.states.hasOwnProperty(name)) {
-            tool_1.warn("Bind attribute\u3010" + name + "\u3011already exists");
+            debug_1.warn(this.onerror, "Bind attribute\u3010" + name + "\u3011already exists");
         }
         this.create_static_data(name, init_value, read_only);
         return this;
@@ -153,7 +154,7 @@ var DataContainer = (function (_super) {
     DataContainer.prototype.clear_polling = function (name) {
         if (name) {
             if (!this.polling_clump.hasOwnProperty(name)) {
-                tool_1.warn("Bind attribute\u3010" + name + "\u3011above no \"polling\" to clear");
+                debug_1.warn(this.onerror, "Bind attribute\u3010" + name + "\u3011above no \"polling\" to clear");
             }
             this.polling_clump[name]();
             return this;

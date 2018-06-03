@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
-var tool_1 = require("./tool");
 var responsive_attr_1 = require("./responsive_attr");
 var queue_1 = require("./queue");
+var debug_1 = require("./debug");
 var DELIMITER = '_:_';
 var ID_REG = new RegExp(",?\"id\":\"[^}]+" + DELIMITER + ".+_:_swopid\",?", 'g');
 var Swop = (function (_super) {
@@ -15,8 +15,9 @@ var Swop = (function (_super) {
         _this.middleware = [];
         _this.json_stringify = json_stringify;
         _this.json_parse = json_parse;
+        _this.onerror = function () { return false; };
         _this.send = function () {
-            tool_1.warn('You must override the 【send】 method', true);
+            debug_1.warn(null, 'You must override the 【send】 method', true);
         };
         _this.init();
         return _this;
@@ -56,7 +57,7 @@ var Swop = (function (_super) {
     };
     Swop.prototype.search = function (name, id) {
         if (typeof id !== 'string' || (id && !id.includes(name))) {
-            tool_1.warn("\u3010" + id + "\u3011is invalid id");
+            debug_1.warn(this.onerror, "\u3010" + id + "\u3011is invalid id");
         }
         var list = this.store[name].funs || [];
         for (var i = 0, funUnit = void 0; funUnit = list[i]; i++) {
@@ -71,12 +72,12 @@ var Swop = (function (_super) {
     Swop.prototype.get_id = function (data) {
         if (typeof data === 'string') {
             if (!data.includes('origin_data' || !data.includes('swopid'))) {
-                tool_1.warn('The response data must contain 【origin_data】 and 【id】');
+                debug_1.warn(this.onerror, 'The response data must contain 【origin_data】 and 【id】');
             }
             var ID_GROUP_REG = new RegExp("(,?\"id\":\")([^}]+" + DELIMITER + ".+_:_swopid)\"(,?)", 'g');
             var match = ID_GROUP_REG.exec(data);
             if (!match || (match && !match[2])) {
-                tool_1.warn("Invalid id");
+                debug_1.warn(this.onerror, "Invalid id");
             }
             return match[2];
         }
@@ -137,7 +138,7 @@ var Swop = (function (_super) {
             var _a = _this, store = _a.store, convert_json = _a.convert_json, json_parse = _a.json_parse;
             if (typeof data !== 'string' &&
                 (typeof data !== 'object' || data === null)) {
-                tool_1.warn("response data must be JSON string or javascript object");
+                debug_1.warn(_this.onerror, "response data must be JSON string or javascript object");
             }
             if (json_parse) {
                 data = convert_json(data, 'parse', reject);
@@ -153,7 +154,7 @@ var Swop = (function (_super) {
                     }
                     var compatible = {
                         fun_body: function () {
-                            tool_1.warn('next Swop function is 【undefined】', true);
+                            debug_1.warn(null, 'next Swop function is 【undefined】', true);
                             return false;
                         },
                     };

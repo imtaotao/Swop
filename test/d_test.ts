@@ -127,3 +127,7 @@ function test_polling () {
 }
 
 test_polling();
+
+setTimeout(function t () {
+  (<any>window).s.response('interfaceOne')
+}, 1000)

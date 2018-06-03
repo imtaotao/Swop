@@ -1,6 +1,7 @@
-import { RESOLVE, REJECT, warn } from './tool';
+import { RESOLVE, REJECT } from './tool';
 import { DataContainer } from './responsive_attr';
 import { Queue, QueueTypes, UnitFun } from './queue';
+import { warn, StackDetail } from './debug';
 
 type ThenAcceptTypes = [
   sendData,
@@ -76,6 +77,7 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
   public store: Store<I> | any;
   private middleware: MiddlewareData<I, D>[];
   public send: send<I>;
+  public onerror: (msg:string, stack:StackDetail, error_str:string) => void;
   
   public constructor ({
       json_stringify = false,
@@ -86,8 +88,9 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
     this.middleware = [];
 		this.json_stringify = json_stringify;
     this.json_parse = json_parse;
+    this.onerror = () => false;
     this.send = () => {
-      warn('You must override the 【send】 method', true);
+      warn(null, 'You must override the 【send】 method', true);
     }
     this.init();
   }
@@ -126,7 +129,7 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
 
   private search (name:I, id:FunUnit['id']) : FunUnit['fun_body'] | any {
     if (typeof id !== 'string' || (id && !id.includes(<any>name))) {
-      warn(`【${id}】is invalid id`);
+      warn(this.onerror, `【${id}】is invalid id`);
     }
     
     const list = (<SingleStroeQueue>this.store[name]).funs || [];
@@ -146,14 +149,14 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
   private get_id (data:sendData | string) : FunUnit['id'] {
     if (typeof data === 'string') {
       if (!data.includes('origin_data' || !data.includes('swopid'))) {
-        warn('The response data must contain 【origin_data】 and 【id】');
+        warn(this.onerror, 'The response data must contain 【origin_data】 and 【id】');
       }
 
       const ID_GROUP_REG = new RegExp(`(,?"id":")([^}]+${DELIMITER}.+_:_swopid)"(,?)`, 'g');
       const match = ID_GROUP_REG.exec(data);
 
       if (!match || (match && !match[2])) {
-        warn(`Invalid id`);
+        warn(this.onerror, `Invalid id`);
       }
 
       return (<any>match)[2];
@@ -230,7 +233,7 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
           typeof data !== 'string' &&
           (typeof data !== 'object' || data === null)
       ) {
-        warn(`response data must be JSON string or javascript object`);
+        warn(this.onerror, `response data must be JSON string or javascript object`);
       }
 
       if (json_parse) {
@@ -245,7 +248,7 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
         queue.register((next:UnitFun<any>, ...args) => {
           const compatible = {
             fun_body () {
-              warn('next Swop function is 【undefined】', true);
+              warn(null, 'next Swop function is 【undefined】', true);
               return false;
             },
           }

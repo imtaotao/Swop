@@ -43,12 +43,3 @@ var Tool = (function () {
     return Tool;
 }());
 exports.Tool = Tool;
-function warn(error_text, is_warn) {
-    if (is_warn === void 0) { is_warn = false; }
-    var message = error_text + " --- from Swop.js.";
-    if (!is_warn) {
-        throw Error(message);
-    }
-    console.warn(message);
-}
-exports.warn = warn;
