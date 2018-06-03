@@ -15,7 +15,7 @@ function send_warn(_a, handle_error, is_warn) {
     var message = _a.message, stack = _a.stack;
     var _stack = get_error_stack(stack);
     var space = '\u0020'.repeat(4);
-    var err_str = "[tip]: " + message + "\n\n";
+    var err_str = message + "\n\n";
     for (var _i = 0, _stack_1 = _stack; _i < _stack_1.length; _i++) {
         var _b = _stack_1[_i], method = _b.method, detail = _b.detail;
         err_str += space + "[" + method + "] ---> " + detail + "\n";
@@ -45,10 +45,10 @@ function get_match(info, is_chorme) {
         ? /\s*at\s(([^\s]+)(\s\())?([^\(\)]+)\)?/g.exec(info)
         : /((.+)@)?(.+)\n?/g.exec(info);
     if (!match) {
-        return { method: '', detail: info };
+        return { method: 'native error', detail: info };
     }
     return {
-        method: match[2] || ' ',
+        method: match[2] || 'anonymous',
         detail: match[is_chorme ? 4 : 3],
     };
 }
