@@ -1,5 +1,5 @@
 {
-  "name": "swop",
+  "name": "swop-store",
   "version": "1.0.7",
   "description": "Swop is a small library for data interaction with clients.",
   "main": "./build/index.js",
