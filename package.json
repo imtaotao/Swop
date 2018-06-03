@@ -1,6 +1,6 @@
 {
   "name": "swop",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Swop is a small library for data interaction with clients.",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
