@@ -147,6 +147,7 @@ var DataContainer = (function (_super) {
         if (read_only === void 0) { read_only = false; }
         if (this.states.hasOwnProperty(name)) {
             debug_1.warn(this.onerror, "Bind attribute\u3010" + name + "\u3011already exists");
+            return this;
         }
         this.create_static_data(name, init_value, read_only);
         return this;
@@ -155,6 +156,7 @@ var DataContainer = (function (_super) {
         if (name) {
             if (!this.polling_clump.hasOwnProperty(name)) {
                 debug_1.warn(this.onerror, "Bind attribute\u3010" + name + "\u3011above no \"polling\" to clear");
+                return this;
             }
             this.polling_clump[name]();
             return this;

@@ -1,6 +1,11 @@
-export function warn (handle_error:Function | null, error_text:string, is_warn = false) : void {
-  const message = `${error_text} --- from Swop.js`;
+export function warn (handle_error:Function | null, error_text:string | Error, is_warn = false) : void {
+  if (error_text instanceof Error) {
+    error_text.message += '--- from Swop.js';
+    send_warn(<any>error_text, handle_error, is_warn);
+    return;
+  }
 
+  const message = `${error_text} --- from Swop.js`;
   try {
     throw Error(message);
   } catch (err) {
@@ -8,7 +13,7 @@ export function warn (handle_error:Function | null, error_text:string, is_warn =
   }
 }
 
-function send_warn ({ message, stack }, handle_error, is_warn) : void {
+function send_warn ({ message, stack = '' }, handle_error, is_warn) : void {
   const _stack = get_error_stack(stack);
   const space = '\u0020'.repeat(4);
   let err_str = `${message}\n\n`;
@@ -34,6 +39,7 @@ export type StackDetail = {
 }
 
 function get_error_stack (stack_msg) : StackDetail[] {
+  if (!stack_msg) { return []; }
   const arr = stack_msg.replace(/↵/g, '\n').split('\n');
   const stack:StackDetail[] = [];
 

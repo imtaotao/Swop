@@ -1,6 +1,11 @@
 import { DataContainer } from './responsive_attr';
 import { QueueTypes, UnitFun } from './queue';
 import { StackDetail } from './debug';
+export declare type ThenAcceptTypes = [sendData['origin_data'], {
+    next: (...args: any[]) => void;
+    params: any[];
+    nextSwopFun: storeFunBody;
+}];
 export declare type Store<I> = {
     [S in keyof I]: SingleStroeQueue;
 };
@@ -30,9 +35,9 @@ export interface sendData {
 export interface SwopTypes<I, R, D> extends DataContainer<I, R, D> {
     use(match: I | D | '*', fun: Middleware<I, D>): Swop<I, R>;
     response(data: sendData): Promise<any>;
-    call(name: I, data?: any): Promise<any>;
-    get_queue(name: I): SingleStroeQueue['queue'];
-    get_funs(name: I): SingleStroeQueue['funs'];
+    call(name: I, data?: any): Promise<ThenAcceptTypes>;
+    get_queue(name: I): SingleStroeQueue['queue'] | null;
+    get_funs(name: I): SingleStroeQueue['funs'] | null;
 }
 export declare class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements SwopTypes<I, R, D> {
     readonly json_stringify: boolean;
@@ -50,9 +55,9 @@ export declare class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> impl
     private get_json_origin_data(data);
     private send_request(name, data, reject);
     use(match: I | D | '*', fun: Middleware<I, D>): Swop<I, R>;
-    call(name: I, data?: any): Promise<any>;
+    call(name: I, data?: any): Promise<ThenAcceptTypes>;
     response(data: sendData | string): Promise<any>;
-    get_queue(name: I): SingleStroeQueue['queue'];
-    get_funs(name: I): SingleStroeQueue['funs'];
+    get_queue(name: I): SingleStroeQueue['queue'] | null;
+    get_funs(name: I): SingleStroeQueue['funs'] | null;
 }
 export declare function CreateSwop<M>(opions: SwopInitParam): M;

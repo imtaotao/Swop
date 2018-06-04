@@ -42,11 +42,7 @@ var Swop = (function (_super) {
             }
             var response_data = [
                 _this.get_json_origin_data(data),
-                {
-                    next: next,
-                    params: params,
-                    nextSwopFun: nextSwopFun,
-                }
+                { next: next, params: params, nextSwopFun: nextSwopFun },
             ];
             _this.call_middleware(name, {
                 value: response_data,
@@ -57,7 +53,7 @@ var Swop = (function (_super) {
     };
     Swop.prototype.search = function (name, id) {
         if (typeof id !== 'string' || (id && !id.includes(name))) {
-            debug_1.warn(this.onerror, "\u3010" + id + "\u3011is invalid id");
+            throw Error("\u3010" + id + "\u3011is invalid id");
         }
         var list = this.store[name].funs || [];
         for (var i = 0, funUnit = void 0; funUnit = list[i]; i++) {
@@ -72,12 +68,12 @@ var Swop = (function (_super) {
     Swop.prototype.get_id = function (data) {
         if (typeof data === 'string') {
             if (!data.includes('origin_data' || !data.includes('swopid'))) {
-                debug_1.warn(this.onerror, 'The response data must contain 【origin_data】 and 【id】');
+                throw Error('The response data must contain 【origin_data】 and 【id】');
             }
             var ID_GROUP_REG = new RegExp("(,?\"id\":\")([^}]+" + DELIMITER + ".+_:_swopid)\"(,?)", 'g');
             var match = ID_GROUP_REG.exec(data);
             if (!match || (match && !match[2])) {
-                debug_1.warn(this.onerror, "Invalid id");
+                throw Error("Invalid id");
             }
             return match[2];
         }
@@ -108,7 +104,7 @@ var Swop = (function (_super) {
     };
     Swop.prototype.call = function (name, data) {
         var _this = this;
-        return new Promise(function (resolve, reject) {
+        var P = new Promise(function (resolve, reject) {
             var _a = _this, store = _a.store, random_str = _a.random_str;
             var fun = _this.create_callback(name, resolve);
             var current_unit = store[name];
@@ -131,19 +127,26 @@ var Swop = (function (_super) {
             }
             _this.send_request(name, send_data, reject);
         });
+        return P.then(function (args) { return args; }).catch(function (err) {
+            debug_1.warn(_this.onerror, err);
+            return Promise.reject(err);
+        });
     };
     Swop.prototype.response = function (data) {
         var _this = this;
-        return new Promise(function (resolve, reject) {
+        var P = new Promise(function (resolve, reject) {
             var _a = _this, store = _a.store, convert_json = _a.convert_json, json_parse = _a.json_parse;
-            if (typeof data !== 'string' &&
-                (typeof data !== 'object' || data === null)) {
-                debug_1.warn(_this.onerror, "response data must be JSON string or javascript object");
+            var no_legal = function (data) {
+                return typeof data !== 'string' && (typeof data !== 'object' || data === null);
+            };
+            if (no_legal(data)) {
+                throw Error('response data must be JSON string or javascript object');
             }
-            if (json_parse) {
-                data = convert_json(data, 'parse', reject);
-            }
+            json_parse && (data = convert_json(data, 'parse', reject));
             var id = _this.get_id(data);
+            if (!id) {
+                throw Error('The response data must contain【id】');
+            }
             var name = _this.get_name_by_id(id);
             var _b = store[name], funs = _b.funs, queue = _b.queue;
             if (store[name]) {
@@ -167,14 +170,22 @@ var Swop = (function (_super) {
                 });
             }
         });
+        return P.catch(function (err) {
+            debug_1.warn(_this.onerror, err);
+            return Promise.reject(err);
+        });
     };
     Swop.prototype.get_queue = function (name) {
-        var compatible = this.store[name] || [{ queue: false }];
-        return compatible.queue;
+        var compatible = this.store[name];
+        return compatible
+            ? compatible.queue
+            : null;
     };
     Swop.prototype.get_funs = function (name) {
-        var compatible = this.store[name] || [{ funs: false }];
-        return compatible.funs;
+        var compatible = this.store[name];
+        return compatible
+            ? compatible.funs
+            : null;
     };
     return Swop;
 }(responsive_attr_1.DataContainer));

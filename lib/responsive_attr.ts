@@ -217,6 +217,7 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
   public create (name:D, init_value?:any, read_only = false) : Swop<I, R> {
     if (this.states.hasOwnProperty(<any>name)) {
       warn((<any>this).onerror, `Bind attribute【${name}】already exists`);
+      return <any>this;
     }
     
     this.create_static_data(name, init_value, read_only);
@@ -228,6 +229,7 @@ export class DataContainer<I, R, D> extends Tool implements DataContainerClass<I
     if (name) {
       if (!this.polling_clump.hasOwnProperty(name)) {
         warn((<any>this).onerror, `Bind attribute【${name}】above no "polling" to clear`);
+        return <any>this;
       }
       this.polling_clump[name]()
       return <any>this;

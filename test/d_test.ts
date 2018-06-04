@@ -24,7 +24,7 @@ for (let i = 0; i < 5; i++) {
   })
 }
 
-const ids = C.get_funs('interfaceOne').map(val => val.id)
+const ids = (<any>C.get_funs('interfaceOne')).map(val => val.id)
 
 C.use('*', (val) => {
   if (typeof val.value === 'string') {
@@ -45,7 +45,7 @@ function polling (name:string) {
 
   let i = 0;
   setInterval(() => {
-    const _ids = C.get_funs(<any>name).map(val => val.id)
+    const _ids = (<any>C.get_funs(<any>name)).map(val => val.id)
     _ids.forEach((id:string, index:number) => {
       C.response(<any>JSON.stringify({
         origin_data: {
@@ -83,7 +83,7 @@ C.call('interfaceTwo').then(([res, args]) => {
 
 C.response(JSON.stringify({
   origin_data: data,
-  id: C.get_funs('interfaceTwo')[0].id,
+  id: (<any>C.get_funs('interfaceTwo'))[0].id,
 }))
 
 function test_polling () {
@@ -117,7 +117,7 @@ function test_polling () {
   s.create('dataOne');
   s.use('interfaceOne', val => {
     const time_diff = Date.now() - pre_time;
-    console.log(res_i, time_diff, val.value[0]);
+    // console.log(res_i, time_diff, val.value[0]);
 
     res_i++;
     pre_time = Date.now();
@@ -127,6 +127,10 @@ function test_polling () {
 }
 
 test_polling();
+
+(<any>window).s.onerror = (msg, stack, err_s) => {
+  console.log(msg, stack, err_s);
+}
 
 setTimeout(function t () {
   (<any>window).s.response('interfaceOne')

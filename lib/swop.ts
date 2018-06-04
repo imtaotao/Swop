@@ -3,10 +3,10 @@ import { DataContainer } from './responsive_attr';
 import { Queue, QueueTypes, UnitFun } from './queue';
 import { warn, StackDetail } from './debug';
 
-type ThenAcceptTypes = [
-  sendData,
+export type ThenAcceptTypes = [
+  sendData['origin_data'],
   {
-    next: UnitFun<any>;
+    next: (...args:any[]) => void;
     params: any[];
     nextSwopFun: storeFunBody;
   }
@@ -62,9 +62,9 @@ export interface sendData {
 export interface SwopTypes<I, R, D> extends DataContainer<I, R, D> {
   use (match:I | D | '*', fun:Middleware<I, D>) : Swop<I, R>;
   response (data:sendData) : Promise<any>;
-  call (name:I, data?:any) : Promise<any>;
-  get_queue (name:I) : SingleStroeQueue['queue'];
-  get_funs (name:I) : SingleStroeQueue['funs'];
+  call (name:I, data?:any) : Promise<ThenAcceptTypes>;
+  get_queue (name:I) : SingleStroeQueue['queue'] | null;
+  get_funs (name:I) : SingleStroeQueue['funs'] | null;
 }
 
 const DELIMITER:string = '_:_';
@@ -112,11 +112,7 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
     return (next:UnitFun<any>, nextSwopFun:storeFunBody, data:sendData, ...params:any[]) => {
       const response_data:ThenAcceptTypes = [
         this.get_json_origin_data(data),
-        {
-          next,
-          params,
-          nextSwopFun,
-        }
+        { next, params, nextSwopFun },
       ]
 
       this.call_middleware(name, {
@@ -129,7 +125,7 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
 
   private search (name:I, id:FunUnit['id']) : FunUnit['fun_body'] | any {
     if (typeof id !== 'string' || (id && !id.includes(<any>name))) {
-      warn(this.onerror, `【${id}】is invalid id`);
+      throw Error(`【${id}】is invalid id`);
     }
     
     const list = (<SingleStroeQueue>this.store[name]).funs || [];
@@ -146,23 +142,23 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
     return (<any>id.split(DELIMITER))[0];
   }
 
-  private get_id (data:sendData | string) : FunUnit['id'] {
+  private get_id (data:sendData | string) : FunUnit['id'] | undefined {
     if (typeof data === 'string') {
       if (!data.includes('origin_data' || !data.includes('swopid'))) {
-        warn(this.onerror, 'The response data must contain 【origin_data】 and 【id】');
+        throw Error('The response data must contain 【origin_data】 and 【id】');
       }
 
       const ID_GROUP_REG = new RegExp(`(,?"id":")([^}]+${DELIMITER}.+_:_swopid)"(,?)`, 'g');
       const match = ID_GROUP_REG.exec(data);
 
       if (!match || (match && !match[2])) {
-        warn(this.onerror, `Invalid id`);
+        throw Error(`Invalid id`);
       }
 
       return (<any>match)[2];
     }
 
-    return (<sendData>data).id;
+    return data.id;
   }
 
   private get_json_origin_data (data:string | any) : string | sendData['origin_data'] {
@@ -196,11 +192,11 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
     return <any>this;
   }
 
-  public call (name:I, data?:any) : Promise<any> {
-    return new Promise((resolve, reject) => {
+  public call (name:I, data?:any) : Promise<ThenAcceptTypes> {
+    const P = new Promise<ThenAcceptTypes>((resolve, reject) => {
       const { store, random_str } = this;
       const fun = this.create_callback(name, resolve);
-
+      
       const current_unit:SingleStroeQueue | undefined = store[name];
       const funUnit:FunUnit = {
         fun_body: fun,
@@ -220,27 +216,33 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
       } else {
         current_unit.funs.push(funUnit);
       }
-
+      
       this.send_request(name, send_data, reject);
     })
+
+    return P.then(args => args).catch((err) => {
+      warn(this.onerror, err);
+      return Promise.reject(err);
+    });
   }
 
   public response (data:sendData | string) : Promise<any> {
-    return new Promise((resolve, reject) => {
+    const P = new Promise((resolve, reject) => {
       const { store, convert_json, json_parse } = this;
-      
-      if (
-          typeof data !== 'string' &&
-          (typeof data !== 'object' || data === null)
-      ) {
-        warn(this.onerror, `response data must be JSON string or javascript object`);
+      const no_legal = (data) => {
+        return typeof data !== 'string' && (typeof data !== 'object' || data === null);
       }
 
-      if (json_parse) {
-        data = convert_json(data, 'parse', reject);
+      if (no_legal(data)) {
+        throw Error('response data must be JSON string or javascript object');
       }
 
+      json_parse && (data = convert_json(data, 'parse', reject));
       const id = this.get_id(data);
+      if (!id) {
+        throw Error('The response data must contain【id】');
+      }
+
       const name = this.get_name_by_id(id);
       const { funs, queue } = <SingleStroeQueue>store[name];
 
@@ -262,16 +264,27 @@ export class Swop<I, R, D = keyof R> extends DataContainer<I, R, D> implements S
         })
       }
     })
+
+    return P.catch(err => {
+      warn(this.onerror, err);
+      return Promise.reject(err);
+    })
   }
 
-  public get_queue (name: I) : SingleStroeQueue['queue'] {
-    const compatible = <SingleStroeQueue>this.store[name] || [{ queue: false }];
-    return compatible.queue;
+  public get_queue (name: I) : SingleStroeQueue['queue'] | null {
+    const compatible = <SingleStroeQueue>this.store[name];
+
+    return compatible
+      ? compatible.queue
+      : null;
   }
 
-  public get_funs (name: I) : SingleStroeQueue['funs'] {
-    const compatible = <SingleStroeQueue>this.store[name] || [{ funs: false }];
-    return compatible.funs;
+  public get_funs (name: I) : SingleStroeQueue['funs'] | null {
+    const compatible = <SingleStroeQueue>this.store[name];
+
+    return compatible
+      ? compatible.funs
+      : null;
   }
 }
 
