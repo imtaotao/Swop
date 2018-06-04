@@ -68,7 +68,7 @@ test('Test subscribe and unsubscribe method', t => {
   try {
     s.create('dataOne');
   } catch (err) {
-    t.is(err.message, 'Bind attribute【dataOne】already exists --- from Swop.js.');
+    t.true(err.includes('Bind attribute【dataOne】already exists --- from Swop.js'));
   }
 
   const remove = s.dataOne.subscribe(new_value => {

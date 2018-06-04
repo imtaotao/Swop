@@ -2,6 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function warn(handle_error, error_text, is_warn) {
     if (is_warn === void 0) { is_warn = false; }
+    if (error_text instanceof Error) {
+        error_text.message += '--- from Swop.js';
+        send_warn(error_text, handle_error, is_warn);
+        return;
+    }
     var message = error_text + " --- from Swop.js";
     try {
         throw Error(message);
@@ -12,12 +17,12 @@ function warn(handle_error, error_text, is_warn) {
 }
 exports.warn = warn;
 function send_warn(_a, handle_error, is_warn) {
-    var message = _a.message, stack = _a.stack;
+    var message = _a.message, _b = _a.stack, stack = _b === void 0 ? '' : _b;
     var _stack = get_error_stack(stack);
     var space = '\u0020'.repeat(4);
     var err_str = message + "\n\n";
     for (var _i = 0, _stack_1 = _stack; _i < _stack_1.length; _i++) {
-        var _b = _stack_1[_i], method = _b.method, detail = _b.detail;
+        var _c = _stack_1[_i], method = _c.method, detail = _c.detail;
         err_str += space + "[" + method + "] ---> " + detail + "\n";
     }
     if (handle_error && handle_error(message, _stack, err_str) !== false) {
@@ -29,6 +34,9 @@ function send_warn(_a, handle_error, is_warn) {
     console.warn(err_str);
 }
 function get_error_stack(stack_msg) {
+    if (!stack_msg) {
+        return [];
+    }
     var arr = stack_msg.replace(/↵/g, '\n').split('\n');
     var stack = [];
     for (var _i = 0, arr_1 = arr; _i < arr_1.length; _i++) {

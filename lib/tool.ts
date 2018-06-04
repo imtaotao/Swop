@@ -68,12 +68,3 @@ export class Tool implements ToolTypes {
     return convert_json(data, identifier, reject);
   }
 }
-
-export function warn (error_text:string, is_warn = false) : void {
-  const message = `${error_text} --- from Swop.js.`;
-
-  if (!is_warn) {
-    throw Error(message);
-  }
-  console.warn(message);
-}

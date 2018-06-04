@@ -1,11 +1,17 @@
 import test from 'ava';
-import { Swop, sendData } from '../../build';
+import { Swop, sendData, ContainerDataTypes, CreateSwop } from '../../build';
 
 declare const console:any;
 declare const setTimeout:any;
 type InterfaceNames =
   'one' |
   'two';
+
+type A = ContainerDataTypes<InterfaceNames, keyof D>;
+interface SwopExtend extends Swop<InterfaceNames, D>, D {};
+type D = {
+  "dataOne": A;
+}
 
 const xml = '<block type="random_number" id="bfa)uU#[]1r?Ffk_Ah?(" inline="true" x="207" y="87"><value name="min"><shadow type="math_number" id="@jXQ2#kvcSVf?_,tM,LN"><field name="NUM">0</field></shadow></value><value name="max"><shadow type="math_number" id="Xj3[(6e[5pZT7FYi,be)"><field name="NUM">5</field></shadow></value></block>';
 const get_ids = (s, name) => s.get_funs(name).map((val) => val.id);
@@ -169,4 +175,20 @@ test.cb('Test the use method call "call"', t => {
     t.is(res.response_data, 200);
     t.end();
   })
+})
+
+// test onerror.
+test.cb('Test onerror', t => {
+  t.plan(2);
+  const s = CreateSwop<SwopExtend>({});
+
+  let i = 0;
+  s.onerror = function (msg, tasks, error_text) {
+    t.true(true);
+    i++
+    i === 2 && t.end();
+  }
+  s.response(<any>{}).catch(e => {});
+  s.create('dataOne');
+  s.create('dataOne');
 })
