@@ -415,7 +415,7 @@ id 和 origin_data 是唯一约定好的字段名，不应该带有其他的数�
 [unsubscribe]:#unsubscribe
 [polling]:#polling
 
-[npm-url]:https://img.shields.io/badge/npm-1.0.6-blue.svg
+[npm-url]:https://img.shields.io/badge/npm-1.0.8-blue.svg
 [tests]:https://img.shields.io/badge/tests-12%2F12-brightgreen.svg
 [build]:https://img.shields.io/badge/build-passing-green.svg
 [github_stars]:https://img.shields.io/github/stars/imtaotao/Swop.svg
